@@ -46,7 +46,7 @@ standardisation <- function(consistency.frame){
   ind.int$average.interactions.per.dyad = ind.int$average.interactions.per.dyad/2
   ind.int$sd = aggregate(xx.frame$cor.halves, by = list(xx.frame$interactions.per.dyad), sd, na.rm = T)$x
   ind.int$count = aggregate(xx.frame$count, by = list(xx.frame$interactions.per.dyad), sum, na.rm = T)$x
-  results = data.frame(interactions.per.dyad = NA, median.correlation = NA, sd = NA)
+  results = data.frame(interaction.per.dyad = NA, median.correlation = NA, sd = NA)
   if(max(ind.int$average.median)>0.5){
     nr = min(which(ind.int$average.median >= 0.5))
     results=data.frame(interaction.per.dyad = ind.int$average.interactions.per.dyad[nr],

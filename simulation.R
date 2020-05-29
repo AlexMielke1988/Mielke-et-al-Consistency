@@ -17,6 +17,7 @@ sim.data = lapply(nr.ids, function(k) {
     xx$pot.partner = as.character(subj.to.keep)
     xx$focal = as.character(xx$focal)
     xx = subset(xx, focal != pot.partner)
+    xx$gr.bout.index = sapply(xx$gr.bout.index, function(y) paste(c(x,y), collapse = '_'))
     return(xx)
   })
 
@@ -37,13 +38,10 @@ sim.data = lapply(nr.ids, function(k) {
   data.set = subset(data.set, remove == 1)
   data.set = data.set[data.set$focal!= data.set$pot.partner,]
 
-  data.set$eff.gr.size = unlist(lapply(unique(data.set$gr.bout.index), function(i) {
-    xx = nrow(subset(data.set, gr.bout.index == i))
-    xx = rep(xx, xx)
-    return(xx)
-  }))
+  eff.gr.size = table(data.set$gr.bout.index)
+  eff.gr.size = names(eff.gr.size)[eff.gr.size > 1]
 
-  data.set = subset(data.set, eff.gr.size > 1)
+  data.set = subset(data.set, gr.bout.index%in%eff.gr.size)
   data.set$dyad = apply(cbind(
     as.character(data.set$focal),
     as.character(data.set$pot.partner)
@@ -53,6 +51,7 @@ sim.data = lapply(nr.ids, function(k) {
 
   ### set grooming likelihood
   dyads$gr.llh = 0
+  dyads = dyads[dyads$focal!=dyads$partner,]
   dyads$dyad = apply(cbind(as.character(dyads$focal), as.character(dyads$partner)), 1, function(x) {
     paste(sort(x), collapse = "_")
   })
@@ -61,58 +60,78 @@ sim.data = lapply(nr.ids, function(k) {
     n = nrow(dyads),
     mean = 0.5,
     sd = 0.2
-  ))
+  ) ^ 2)
   dyads$gr.llh[dyads$gr.llh > 1] = 1
 
-  data.set$gr.llh = dyads$gr.llh[match(data.set$dyad, dyads$dyad)]
-  data.set$llh.high = data.set$gr.llh ^ 4
-  data.set$llh.medium = data.set$gr.llh ^ 2
-  data.set$llh.low = data.set$gr.llh ^ 0.8
-  data.set = data.set[complete.cases(data.set), ]
-  data.set$llh.high[data.set$llh.high == 1] = 0.9999
-  data.set$llh.medium[data.set$llh.medium == 1] = 0.9999
-  data.set$llh.low[data.set$llh.low == 1] = 0.001
-  data.set$llh.high[data.set$llh.high == 0] = 0.001
-  data.set$llh.medium[data.set$llh.medium == 0] = 0.001
-  data.set$llh.low[data.set$llh.low == 0] = 0.001
+  focal = data.set$focal
+  gr.bout.index = data.set$gr.bout.index
+  gr.llh = dyads$gr.llh[match(data.set$dyad, dyads$dyad)]
+  llh.high = data.set$gr.llh
+  llh.medium = data.set$gr.llh
+  llh.low = data.set$gr.llh
 
-  data.set$gr.initiated.low = 0
-  data.set$gr.initiated.medium = 0
-  data.set$gr.initiated.high = 0
-  data.set$gr.initiated.lowin = 0
-  data.set$gr.initiated.mediumin = 0
-  data.set$gr.initiated.highin = 0
-  data.set$gr.initiated.random = 0
-  data.set$gr.initiated.randomin = 0
+  for(i in 1:length(unique(focal))){
+    xx = gr.llh[focal == unique(focal)[i]]
+    xx2 = xx ^ 2
+    llh.medium[focal == unique(focal)[i]] = (xx-min(xx))/(max(xx)-min(xx)) * (0.9 - 0.1) + 0.1
+    llh.low[focal == unique(focal)[i]] = (xx-min(xx))/(max(xx)-min(xx)) * (0.75 - 0.25) + 0.25
+    llh.high[focal == unique(focal)[i]] = ((xx2-min(xx2))/(max(xx2)-min(xx2)))
+  }
 
-  xx = names(table(data.set$gr.bout.index)[table(data.set$gr.bout.index)==1])
+
+  llh.high[llh.high == 1] = 0.9999
+  llh.medium[llh.medium == 1] = 0.9999
+  llh.low[llh.low == 1] = 0.001
+  llh.high[llh.high == 0] = 0.001
+  llh.medium[llh.medium == 0] = 0.001
+  llh.low[llh.low == 0] = 0.001
+
+  gr.initiated.low = rep(0, length(llh.low))
+  gr.initiated.medium = rep(0, length(llh.low))
+  gr.initiated.high = rep(0, length(llh.low))
+  gr.initiated.lowin = rep(0, length(llh.low))
+  gr.initiated.mediumin = rep(0, length(llh.low))
+  gr.initiated.highin = rep(0, length(llh.low))
+  gr.initiated.random = rep(0, length(llh.low))
+  gr.initiated.randomin = rep(0, length(llh.low))
+
+  xx = names(table(gr.bout.index)[table(gr.bout.index)==1])
+  gr.bout.index = gr.bout.index[!gr.bout.index%in%xx]
   data.set = data.set[!data.set$gr.bout.index%in%xx,]
 
-  for (i in unique(data.set$gr.bout.index)) {
-    xx = which(data.set$gr.bout.index == i)
-    nrlow = sample(xx, size = 1, prob = (data.set$llh.low[xx]))
+  for (i in unique(gr.bout.index)) {
+    xx = which(gr.bout.index == i)
+    nrlow = sample(xx, size = 1, prob = (llh.low[xx]))
     nrmedium = sample(xx,
                       size = 1,
-                      prob = (data.set$llh.medium[xx]))
-    nrhigh = sample(xx, size = 1, prob = (data.set$llh.high[xx]))
-    nrlowin = sample(xx, size = 1, prob = 1 - (data.set$llh.low[xx]))
+                      prob = (llh.medium[xx]))
+    nrhigh = sample(xx, size = 1, prob = (llh.high[xx]))
+    nrlowin = sample(xx, size = 1, prob = 1 - (llh.low[xx]))
     nrmediumin = sample(xx,
                         size = 1,
-                        prob = 1 - (data.set$llh.medium[xx]))
+                        prob = 1 - (llh.medium[xx]))
     nrhighin = sample(xx,
                       size = 1,
-                      prob = 1 - (data.set$llh.high[xx]))
+                      prob = 1 - (llh.high[xx]))
     nrrandom = sample(xx, size = 1)
     nrrandomin = sample(xx, size = 1)
-    data.set$gr.initiated.low[nrlow] = 1
-    data.set$gr.initiated.medium[nrmedium] = 1
-    data.set$gr.initiated.high[nrhigh] = 1
-    data.set$gr.initiated.lowin[nrlowin] = 1
-    data.set$gr.initiated.mediumin[nrmediumin] = 1
-    data.set$gr.initiated.highin[nrhighin] = 1
-    data.set$gr.initiated.random[nrrandom] = 1
-    data.set$gr.initiated.randomin[nrrandomin] = 1
+    gr.initiated.low[nrlow] = 1
+    gr.initiated.medium[nrmedium] = 1
+    gr.initiated.high[nrhigh] = 1
+    gr.initiated.lowin[nrlowin] = 1
+    gr.initiated.mediumin[nrmediumin] = 1
+    gr.initiated.highin[nrhighin] = 1
+    gr.initiated.random[nrrandom] = 1
+    gr.initiated.randomin[nrrandomin] = 1
   }
+
+  data.set$gr.initiated.high = gr.initiated.high
+  data.set$gr.initiated.medium = gr.initiated.medium
+  data.set$gr.initiated.low = gr.initiated.low
+  data.set$gr.initiated.highin = gr.initiated.highin
+  data.set$gr.initiated.mediumin = gr.initiated.mediumin
+  data.set$gr.initiated.lowin = gr.initiated.lowin
+  data.set$gr.initiated.randomin = gr.initiated.randomin
 
   data.set = data.set[order(data.set$gr.bout.index),]
   row.nr = 1:nrow(data.set)
@@ -193,7 +212,7 @@ sim.results = lapply(sim.data, function(n){
     names(observation.data) = c(1, 0.66, 0.33)
 
     consistency.frame = lapply(1:length(observation.data), function(x){
-      xx = consistency(individual1 = observation.data[[x]]$individual1, individual2 = observation.data[[x]]$individual1, date = observation.data[[x]]$date, interactions = observation.data[[x]]$grooming.sent, observation.time = observation.data[[x]]$observation.time, k.seq = 0.02, j = 20, plot.col = 'black', behaviour = paste(c(names(n)[[m]], names(observation.data)[x]), collapse = ' '))
+      xx = consistency(individual1 = observation.data[[x]]$individual1, individual2 = observation.data[[x]]$individual2, date = observation.data[[x]]$date, interactions = observation.data[[x]]$grooming.sent, observation.time = observation.data[[x]]$observation.time, k.seq = 0.02, j = 20, plot.col = 'black', behaviour = paste(c(names(n)[[m]], names(observation.data)[x]), collapse = ' '))
       xx.cons = xx$consistency
       xx.cons$observation.time = as.numeric(names(observation.data)[x])
       return(list(consist = xx.cons, plot = xx$plot))

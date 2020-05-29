@@ -1,5 +1,5 @@
 load("G:/Workspace Leipzig/Paper 3/Models/Paper 3 Prepared Data.RData")
-source('G:/Workspace Leipzig/Consistency Paper/consistency_function.R')
+source('C:/Users/Alex1/Documents/GitHub/Consistency Paper/consistency_function.R')
 library(compiler)
 consistency = cmpfun(consistency)
 
