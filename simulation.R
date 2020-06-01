@@ -263,27 +263,27 @@ standardisation.individuals = rbind(standardisation.individuals10, standardisati
 individual.impact = ggplot(filter(all.results, inverted == 0 & certainty == 'high' & observation.time == 1) %>%
                              sample_frac(0.3, replace = T),
                            aes(x = interactions.dyad, y = cor.halves, color = individuals)) +
-  geom_point(alpha = 0.6, size = 2) + ylim(0,1) +
+  geom_point(alpha = 0.6, size = 2) + ylim(0,1) + xlim(0,20) +
   geom_hline(aes(yintercept = 0.5), linetype = 2) +
   geom_line(standardisation.individuals, mapping = aes(x = average.interactions.per.dyad, y = average.median, color = as.factor(individuals)), size = 1.5) +
   geom_errorbar(standardisation.individuals, mapping = aes(x = average.interactions.per.dyad, y = average.median, ymin=average.median-sd, ymax=average.median+sd, color = as.factor(individuals)), width=.5,
                 position=position_dodge(0.05)) +
-  facet_grid(cols = vars(individuals)) +
+  # facet_grid(cols = vars(individuals)) +
   theme_classic()  + labs(y = "Correlation Halves", x = 'Interactions per Dyad') +
   scale_color_discrete(name = 'Number of Individuals')
 
 
 #### impact of collection density
 
-standardisation.collection1 = standardisation(consistency.frame = data.frame(filter(all.results, inverted == 0 & certainty == 'high' & individuals == 10 & observation.time == 1)))$ind.int
+standardisation.collection1 = standardisation(consistency.frame = data.frame(filter(all.results, inverted == 0 & certainty == 'high' & individuals == 18 & observation.time == 1)))$ind.int
 standardisation.collection1$observation.time = 1
-standardisation.collection0.66 = standardisation(consistency.frame = data.frame(filter(all.results, inverted == 0 & certainty == 'high' & individuals == 10 & observation.time == 0.66)))$ind.int
+standardisation.collection0.66 = standardisation(consistency.frame = data.frame(filter(all.results, inverted == 0 & certainty == 'high' & individuals == 18 & observation.time == 0.66)))$ind.int
 standardisation.collection0.66$observation.time = 0.66
-standardisation.collection0.33 = standardisation(consistency.frame = data.frame(filter(all.results, inverted == 0 & certainty == 'high' & individuals == 10 & observation.time == 0.33)))$ind.int
+standardisation.collection0.33 = standardisation(consistency.frame = data.frame(filter(all.results, inverted == 0 & certainty == 'high' & individuals == 18 & observation.time == 0.33)))$ind.int
 standardisation.collection0.33$observation.time = 0.33
 standardisation.collection = rbind(standardisation.collection0.33, standardisation.collection0.66, standardisation.collection1)
 
-collection.impact = ggplot(filter(all.results, inverted == 0 & certainty == 'high' & individuals == 10) %>% sample_frac(0.2, replace = T), aes(x = interactions.dyad, y = cor.halves, color = as.factor(observation.time))) +
+collection.impact = ggplot(filter(all.results, inverted == 0 & certainty == 'high' & individuals == 18) %>% sample_frac(0.2, replace = T), aes(x = interactions.dyad, y = cor.halves, color = as.factor(observation.time))) +
   geom_point(alpha = 0.6, size = 2) + ylim(0,1) +
   geom_hline(aes(yintercept = 0.5), linetype = 2) +
   geom_line(standardisation.collection, mapping = aes(x = average.interactions.per.dyad, y = average.median, color = as.factor(observation.time)), size = 1.5) +
@@ -295,22 +295,22 @@ collection.impact = ggplot(filter(all.results, inverted == 0 & certainty == 'hig
 
 #### impact of certainty
 
-standardisation.certaintyhigh = standardisation(consistency.frame = data.frame(filter(all.results, inverted == 0 & certainty == 'high' & individuals == 10 & observation.time == 1)))$ind.int
+standardisation.certaintyhigh = standardisation(consistency.frame = data.frame(filter(all.results, inverted == 0 & certainty == 'high' & individuals == 18 & observation.time == 1)))$ind.int
 standardisation.certaintyhigh$certainty = 'high'
-standardisation.certaintymedium = standardisation(consistency.frame = data.frame(filter(all.results, inverted == 0 & certainty == 'med' & individuals == 10 & observation.time == 1)))$ind.int
+standardisation.certaintymedium = standardisation(consistency.frame = data.frame(filter(all.results, inverted == 0 & certainty == 'med' & individuals == 18 & observation.time == 1)))$ind.int
 standardisation.certaintymedium$certainty = 'med'
-standardisation.certaintylow = standardisation(consistency.frame = data.frame(filter(all.results, inverted == 0 & certainty == 'low' & individuals == 10 & observation.time == 1)))$ind.int
+standardisation.certaintylow = standardisation(consistency.frame = data.frame(filter(all.results, inverted == 0 & certainty == 'low' & individuals == 18 & observation.time == 1)))$ind.int
 standardisation.certaintylow$certainty = 'low'
 standardisation.certainty = rbind(standardisation.certaintylow, standardisation.certaintymedium, standardisation.certaintyhigh)
 
-certainty.impact = ggplot(filter(all.results, inverted == 0 & observation.time == 1 & individuals == 10 & certainty != 'random') %>% sample_frac(0.2, replace = T), aes(x = interactions.dyad, y = cor.halves, color = as.factor(certainty))) +
-  geom_point(alpha = 0.6, size = 2) + ylim(-0.5,1) +
+certainty.impact = ggplot(filter(all.results, inverted == 0 & observation.time == 1 & individuals == 18 & certainty != 'random') %>% sample_frac(0.2, replace = T), aes(x = interactions.dyad, y = cor.halves, color = as.factor(certainty))) +
+  geom_point(alpha = 0.6, size = 2) + ylim(-0.1,1) +
   geom_line(standardisation.certainty, mapping = aes(x = average.interactions.per.dyad, y = average.median, color = as.factor(certainty)), size = 1.5) +
   geom_errorbar(standardisation.certainty, mapping = aes(x = average.interactions.per.dyad, y = average.median, ymin=average.median-sd, ymax=average.median+sd, color = as.factor(certainty)), width=.5,
                 position=position_dodge(0.05)) +
   geom_hline(aes(yintercept = 0.5), linetype = 2) +
   geom_hline(aes(yintercept = 0), linetype = 1) +
-  facet_grid(cols = vars(certainty)) +
+  # facet_grid(cols = vars(certainty)) +
   theme_classic()  + labs(y = "Correlation Halves", x = 'Interactions per Dyad') +
   scale_color_discrete(name = 'Certainty')
 
@@ -337,19 +337,25 @@ condition.impact = ggplot(filter(all.results, observation.time == 1 &
                                    individuals == 10 &
                                    certainty %in% c('high', 'random') & condition != 'None') %>% sample_frac(0.2, replace = T),
                           aes(x = interactions.dyad, y = cor.halves, color = as.factor(condition))) +
-  geom_point(alpha = 0.4, size = 2) + ylim(-0.5,1) +
+  geom_point(alpha = 0.4, size = 2) + ylim(-0.3,1) +
   geom_line(standardisation.condition, mapping = aes(x = average.interactions.per.dyad, y = average.median, color = as.factor(condition)), size = 1.5) +
   geom_errorbar(standardisation.condition, mapping = aes(x = average.interactions.per.dyad, y = average.median, ymin=average.median-sd, ymax=average.median+sd, color = as.factor(condition)), width=.5,
                 position=position_dodge(0.05)) +
   geom_hline(aes(yintercept = 0.5), linetype = 2) +
   geom_hline(aes(yintercept = 0), linetype = 1) +
   theme_minimal()  + labs(y = "Correlation Halves", x = 'Interactions per Dyad') +
-  facet_grid(cols = vars(condition)) +
+  # facet_grid(cols = vars(condition)) +
   scale_color_discrete(name = 'Condition')
 
-#
-# library(gridExtra)
-#
-# tiff("E:/Workspace Leipzig/Consistency Paper/Simulation_ID.tiff", width = 6, height = 8, units = 'in', res = 300)
-# grid.arrange(individual.impact, collection.impact)
-# dev.off()
+
+library(gridExtra)
+
+tiff("/Users/Alex1/Documents/GitHub/Consistency Paper/Fig 1.tiff", width = 6, height = 8, units = 'in', res = 300)
+grid.arrange(individual.impact, collection.impact)
+dev.off()
+tiff("/Users/Alex1/Documents/GitHub/Consistency Paper/Fig 2.tiff", width = 6, height = 8, units = 'in', res = 300)
+certainty.impact
+dev.off()
+tiff("/Users/Alex1/Documents/GitHub/Consistency Paper/Fig 3.tiff", width = 6, height = 8, units = 'in', res = 300)
+condition.impact
+dev.off()
