@@ -1,7 +1,7 @@
 library(ggplot2)
 library(compiler)
 
-comparison <- function(dyad, beh.h, date, k, behaviour, inds, interactions, undirectional){
+comparison <- function(dyad, beh.h, date, k, behaviour, inds, interactions, undirectional, average.duration = 1){
   dates = sort(as.Date(unique(date)))
   start.day=sample(dates[1:(length(dates)-round(length(dates)*k))], 1, FALSE, NULL)
   all.days=as.character(dates[which(dates==start.day):(which(dates==start.day)+length(dates)*k)])
@@ -35,9 +35,9 @@ comparison <- function(dyad, beh.h, date, k, behaviour, inds, interactions, undi
   comparison.frame = data.frame(subset.size = k,
                                 individuals = inds,
                                 cor.halves = cor(xx.set1$behaviour.ph, xx.set2$behaviour.ph, method = 'spearman'),
-                                interactions = length(interactions[date %in% all.days & interactions!=0]),
+                                interactions = sum(interactions[date %in% all.days])/average.duration,
                                 days=length(all.days),
-                                interactions.per.individual = length(interactions[date %in% all.days & interactions!=0]) / inds,
+                                interactions.per.individual = (sum(interactions[date %in% all.days])/average.duration) / inds,
                                 behaviour = behaviour)
   comparison.frame$interactions.per.dyad = comparison.frame$interactions / ((comparison.frame$individuals^2 - comparison.frame$individuals)/2)
   return(comparison.frame)
@@ -64,7 +64,7 @@ standardisation <- function(consistency.frame){
 }
 
 
-consistency <- function(individual1, individual2, date, interactions, undirectional = FALSE, observation.time, k.seq = 0.05, j = 20, plot.col = 'black', behaviour = ''){
+consistency <- function(individual1, individual2, date, interactions, undirectional = FALSE, observation.time, k.seq = 0.05, j = 20, plot.col = 'black', behaviour = '', average.duration = 1){
   date = as.character(date)
   zero.days = aggregate(observation.time, by = list(date), sum)
   zero.days = setdiff(date, zero.days$Group.1[zero.days$x==0])
@@ -81,7 +81,7 @@ consistency <- function(individual1, individual2, date, interactions, undirectio
   comparison = cmpfun(comparison)
   
   consistency.frame = lapply(seq(1,0.05, by=-k.seq), function(k){ # select increasingly smaller subsets of the data to calculate consistency
-    comparison.frame = do.call(rbind, lapply(1:j, function(x) comparison(dyad = dyad, beh.h = beh.h, date = date, k = k, behaviour = behaviour, inds = inds, interactions = interactions, undirectional = undirectional)))
+    comparison.frame = do.call(rbind, lapply(1:j, function(x) comparison(dyad = dyad, beh.h = beh.h, date = date, k = k, behaviour = behaviour, inds = inds, interactions = interactions, undirectional = undirectional, average.duration = average.duration)))
     return(comparison.frame)
   })
   consistency.frame = do.call(rbind, consistency.frame)
