@@ -80,7 +80,7 @@ sim.data = lapply(nr.ids, function(k) {
   for(i in 1:length(unique(focal))){
     xx = gr.llh[focal == unique(focal)[i]]
     xx2 = xx ^ 2
-    llh.medium[focal == unique(focal)[i]] = (xx2-min(xx2))/(max(xx2)-min(xx2)) * (0.9 - 0.1) + 0.1
+    llh.medium[focal == unique(focal)[i]] = (xx2-min(xx2))/(max(xx2)-min(xx2)) * (0.95 - 0.05) + 0.05
     llh.low[focal == unique(focal)[i]] = (xx-min(xx))/(max(xx)-min(xx)) * (0.9 - 0.1) + 0.1
     llh.high[focal == unique(focal)[i]] = ((xx2-min(xx2))/(max(xx2)-min(xx2)))
   }

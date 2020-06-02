@@ -353,9 +353,9 @@ all.stand$behaviour[all.stand$behaviour%in%c('supplant', 'pant grunt')] = 'pant 
 stand.plot = ggplot(all.stand, aes(x = behaviour, y = interaction.per.dyad, color = group, fill = group, shape = group)) +
   geom_point(size = 3) +
   theme_bw() +
-  labs(y = "Interactions per Dyad", x = 'Interaction Type') +
+  labs(y = "Interactions per Dyad to reach r = 0.5", x = 'Interaction Type') +
   ggtitle('Summary Standardised Consistency') + 
-  scale_color_manual(name = 'Group', values = c("red", "blue", "gold"))
+  scale_color_manual(values = c("red", "blue", "gold"))
 
 library(gridExtra)
 
@@ -368,12 +368,8 @@ tiff("Fig Bodycontact Proximity.tiff", width = 8, height = 10, units = 'in', res
 grid.arrange(bodycontact.plot, proximity.plot)
 dev.off()
 
-tiff("Fig Aggression.tiff", width = 8, height = 10, units = 'in', res = 300)
-grid.arrange(aggression.noncontact.plot, aggression.contact.plot)
-dev.off()
-
-tiff("Fig Pant Supplant.tiff", width = 8, height = 6, units = 'in', res = 300)
-pant.plot
+tiff("Fig Aggression.tiff", width = 8, height = 12, units = 'in', res = 300)
+grid.arrange(aggression.noncontact.plot, aggression.contact.plot, pant.plot)
 dev.off()
 
 tiff("Fig Summary.tiff", width = 8, height = 6, units = 'in', res = 300)

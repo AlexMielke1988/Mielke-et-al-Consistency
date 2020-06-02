@@ -353,9 +353,9 @@ all.stand$behaviour[all.stand$behaviour%in%c('supplant', 'pant grunt')] = 'pant 
 stand.plot = ggplot(all.stand, aes(x = behaviour, y = interaction.per.dyad, color = group, fill = group, shape = group)) +
   geom_point(size = 3) +
   theme_bw() +
-  labs(y = "Interactions per Dyad", x = 'Interaction Type') +
+  labs(y = "Interactions per Dyad to reach r = 0.5", x = 'Interaction Type') +
   ggtitle('Summary Standardised Consistency') + 
-  scale_color_manual(name = 'Group', values = c("red", "blue", "gold"))
+  scale_color_manual(values = c("red", "blue", "gold"))
 
 library(gridExtra)
 
