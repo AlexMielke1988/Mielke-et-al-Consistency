@@ -4,14 +4,14 @@ library(compiler)
 consistency = cmpfun(consistency)
 
 
-east.consistency.grooming = consistency(individual1 = east.data.set$individual1, individual2 = east.data.set$individual2, date = east.data.set$date, interactions = east.data.set$grooming.sent, observation.time = east.data.set$obs.time.with.ass, k.seq = 0.02, j = 1000, plot.col = 'green', behaviour = 'grooming', average.duration = sum(east.data.set$grooming.sent)/sum(east.data.set$grooming.interactions.sent))
-east.consistency.aggression.contact = consistency(individual1 = east.data.set$individual1, individual2 = east.data.set$individual2, date = east.data.set$date, interactions = east.data.set$aggression.nonphysical.sent, observation.time = east.data.set$obs.time.with.ass, k.seq = 0.02, j = 1000, plot.col = 'green',behaviour = 'contact aggression')
-east.consistency.aggression.noncontact = consistency(individual1 = east.data.set$individual1, individual2 = east.data.set$individual2, date = east.data.set$date, interactions = east.data.set$aggression.physical.sent, observation.time = east.data.set$obs.time.with.ass, k.seq = 0.02, j = 1000, plot.col = 'green',behaviour = 'noncontact aggression')
-east.consistency.aggression = consistency(individual1 = east.data.set$individual1, individual2 = east.data.set$individual2, date = east.data.set$date, interactions = east.data.set$aggression.physical.sent + east.data.set$aggression.nonphysical.sent, observation.time = east.data.set$obs.time.with.ass, k.seq = 0.02, j = 1000, plot.col = 'green',behaviour = 'aggression')
-east.consistency.proximity = consistency(individual1 = east.data.set$individual1, individual2 = east.data.set$individual2, undirectional = TRUE, date = east.data.set$date, interactions = east.data.set$proximity3m, observation.time = east.data.set$obs.time.without.ass, k.seq = 0.02, j = 1000, plot.col = 'green',behaviour = 'proximity', average.duration = sum(east.data.set$proximity3m)/sum(east.data.set$proximity3m.interactions))
-east.consistency.bodycontact = consistency(individual1 = east.data.set$individual1, individual2 = east.data.set$individual2, undirectional = TRUE,  date = east.data.set$date, interactions = east.data.set$proximity, observation.time = east.data.set$obs.time.without.ass, k.seq = 0.02, j = 1000, plot.col = 'green',behaviour = 'body contact', average.duration = sum(east.data.set$proximity)/sum(east.data.set$proximity.interactions))
-east.consistency.foodshare = consistency(individual1 = east.data.set$individual1, individual2 = east.data.set$individual2, date = east.data.set$date, interactions = east.data.set$food.share.sent, observation.time = east.data.set$obs.time.without.ass, k.seq = 0.02, j = 1000, plot.col = 'green',behaviour = 'food sharing')
-east.consistency.pant = consistency(individual1 = east.data.set$individual1, individual2 = east.data.set$individual2, date = east.data.set$date, interactions = east.data.set$pant.grunt.sent, observation.time = east.data.set$obs.time.with.ass, k.seq = 0.02, j = 1000, plot.col = 'green',behaviour = 'pant grunt')
+east.consistency.grooming = consistency(individual1 = east.data.set$individual1, individual2 = east.data.set$individual2, date = east.data.set$date, interactions = east.data.set$grooming.sent, observation.time = east.data.set$obs.time.with.ass, k.seq = 0.01, j = 100, plot.col = 'green', behaviour = 'grooming', average.duration = sum(east.data.set$grooming.sent)/sum(east.data.set$grooming.interactions.sent))
+east.consistency.aggression.contact = consistency(individual1 = east.data.set$individual1, individual2 = east.data.set$individual2, date = east.data.set$date, interactions = east.data.set$aggression.physical.sent, observation.time = east.data.set$obs.time.with.ass, k.seq = 0.01, j = 100, plot.col = 'green',behaviour = 'contact aggression')
+east.consistency.aggression.noncontact = consistency(individual1 = east.data.set$individual1, individual2 = east.data.set$individual2, date = east.data.set$date, interactions = east.data.set$aggression.nonphysical.sent, observation.time = east.data.set$obs.time.with.ass, k.seq = 0.01, j = 100, plot.col = 'green',behaviour = 'noncontact aggression')
+east.consistency.aggression = consistency(individual1 = east.data.set$individual1, individual2 = east.data.set$individual2, date = east.data.set$date, interactions = east.data.set$aggression.physical.sent + east.data.set$aggression.nonphysical.sent, observation.time = east.data.set$obs.time.with.ass, k.seq = 0.01, j = 100, plot.col = 'green',behaviour = 'aggression')
+east.consistency.proximity = consistency(individual1 = east.data.set$individual1, individual2 = east.data.set$individual2, undirectional = TRUE, date = east.data.set$date, interactions = east.data.set$proximity3m, observation.time = east.data.set$obs.time.without.ass, k.seq = 0.01, j = 100, plot.col = 'green',behaviour = 'proximity', average.duration = sum(east.data.set$proximity3m)/sum(east.data.set$proximity3m.interactions))
+east.consistency.bodycontact = consistency(individual1 = east.data.set$individual1, individual2 = east.data.set$individual2, undirectional = TRUE,  date = east.data.set$date, interactions = east.data.set$proximity, observation.time = east.data.set$obs.time.without.ass, k.seq = 0.01, j = 100, plot.col = 'green',behaviour = 'body contact', average.duration = sum(east.data.set$proximity)/sum(east.data.set$proximity.interactions))
+east.consistency.foodshare = consistency(individual1 = east.data.set$individual1, individual2 = east.data.set$individual2, date = east.data.set$date, interactions = east.data.set$food.share.sent, observation.time = east.data.set$obs.time.without.ass, k.seq = 0.01, j = 100, plot.col = 'green',behaviour = 'food sharing')
+east.consistency.pant = consistency(individual1 = east.data.set$individual1, individual2 = east.data.set$individual2, date = east.data.set$date, interactions = east.data.set$pant.grunt.sent, observation.time = east.data.set$obs.time.with.ass, k.seq = 0.01, j = 100, plot.col = 'green',behaviour = 'pant grunt')
 
 all.east = do.call(rbind, list(east.consistency.grooming$consistency,
                                east.consistency.aggression.contact$consistency,
@@ -41,17 +41,17 @@ east.stand = rbind(east.consistency.grooming$standardised,
                    east.consistency.aggression$standardised,
                    east.consistency.foodshare$standardised,
                    east.consistency.pant$standardised)
-east.stand$behaviour = c('grooming', 'body contact', 'proximity', 'noncontact aggression', 'contact aggression', 'aggression', 'food share', 'pant grunt')
+east.stand$behaviour = c('grooming', 'body contact', 'proximity', 'contact aggression', 'noncontact aggression', 'aggression', 'food share', 'pant grunt')
 
 
 
-mang.consistency.grooming = consistency(individual1 = mang.data.set$individual1, individual2 = mang.data.set$individual2, date = mang.data.set$date, interactions = mang.data.set$grooming.sent, observation.time = mang.data.set$observation.time.with.assistants, k.seq = 0.02, j = 1000, plot.col = 'yellow', behaviour = 'grooming', average.duration = sum(mang.data.set$grooming.sent)/sum(mang.data.set$grooming.interactions.sent))
-mang.consistency.aggression.contact = consistency(individual1 = mang.data.set$individual1, individual2 = mang.data.set$individual2, date = mang.data.set$date, interactions = mang.data.set$aggression.nonphysical.sent, observation.time = mang.data.set$observation.time.with.assistants, k.seq = 0.02, j = 1000, plot.col = 'yellow',behaviour = 'contact aggression')
-mang.consistency.aggression.noncontact = consistency(individual1 = mang.data.set$individual1, individual2 = mang.data.set$individual2, date = mang.data.set$date, interactions = mang.data.set$aggression.physical.sent, observation.time = mang.data.set$observation.time.with.assistants, k.seq = 0.02, j = 1000, plot.col = 'yellow',behaviour = 'noncontact aggression')
-mang.consistency.aggression = consistency(individual1 = mang.data.set$individual1, individual2 = mang.data.set$individual2, date = mang.data.set$date, interactions = mang.data.set$aggression.physical.sent + mang.data.set$aggression.nonphysical.sent, observation.time = mang.data.set$observation.time.with.assistants, k.seq = 0.02, j = 1000, plot.col = 'yellow',behaviour = 'aggression')
-mang.consistency.proximity = consistency(individual1 = mang.data.set$individual1, individual2 = mang.data.set$individual2, date = mang.data.set$date, interactions = mang.data.set$proximity3m, undirectional = TRUE, observation.time = mang.data.set$observation.time.with.assistants, k.seq = 0.02, j = 50, plot.col = 'yellow',behaviour = 'proximity')
-mang.consistency.bodycontact = consistency(individual1 = mang.data.set$individual1, individual2 = mang.data.set$individual2, date = mang.data.set$date, interactions = mang.data.set$proximity, undirectional = TRUE, observation.time = mang.data.set$observation.time.with.assistants, k.seq = 0.02, j = 1000, plot.col = 'yellow',behaviour = 'body contact')
-mang.consistency.supplant = consistency(individual1 = mang.data.set$individual1, individual2 = mang.data.set$individual2, date = mang.data.set$date, interactions = mang.data.set$supplant.sent, observation.time = mang.data.set$observation.time.with.assistants, k.seq = 0.02, j = 1000, plot.col = 'yellow',behaviour = 'supplant')
+mang.consistency.grooming = consistency(individual1 = mang.data.set$individual1, individual2 = mang.data.set$individual2, date = mang.data.set$date, interactions = mang.data.set$grooming.sent, observation.time = mang.data.set$observation.time.with.assistants, k.seq = 0.01, j = 100, plot.col = 'yellow', behaviour = 'grooming', average.duration = sum(mang.data.set$grooming.sent)/sum(mang.data.set$grooming.interactions.sent))
+mang.consistency.aggression.contact = consistency(individual1 = mang.data.set$individual1, individual2 = mang.data.set$individual2, date = mang.data.set$date, interactions = mang.data.set$aggression.physical.sent, observation.time = mang.data.set$observation.time.with.assistants, k.seq = 0.01, j = 100, plot.col = 'yellow',behaviour = 'contact aggression')
+mang.consistency.aggression.noncontact = consistency(individual1 = mang.data.set$individual1, individual2 = mang.data.set$individual2, date = mang.data.set$date, interactions = mang.data.set$aggression.nonphysical.sent, observation.time = mang.data.set$observation.time.with.assistants, k.seq = 0.01, j = 100, plot.col = 'yellow',behaviour = 'noncontact aggression')
+mang.consistency.aggression = consistency(individual1 = mang.data.set$individual1, individual2 = mang.data.set$individual2, date = mang.data.set$date, interactions = mang.data.set$aggression.physical.sent + mang.data.set$aggression.nonphysical.sent, observation.time = mang.data.set$observation.time.with.assistants, k.seq = 0.01, j = 100, plot.col = 'yellow',behaviour = 'aggression')
+mang.consistency.proximity = consistency(individual1 = mang.data.set$individual1, individual2 = mang.data.set$individual2, date = mang.data.set$date, interactions = mang.data.set$proximity3m, undirectional = TRUE, observation.time = mang.data.set$observation.time.with.assistants, k.seq = 0.01, j = 50, plot.col = 'yellow',behaviour = 'proximity')
+mang.consistency.bodycontact = consistency(individual1 = mang.data.set$individual1, individual2 = mang.data.set$individual2, date = mang.data.set$date, interactions = mang.data.set$proximity, undirectional = TRUE, observation.time = mang.data.set$observation.time.with.assistants, k.seq = 0.01, j = 100, plot.col = 'yellow',behaviour = 'body contact')
+mang.consistency.supplant = consistency(individual1 = mang.data.set$individual1, individual2 = mang.data.set$individual2, date = mang.data.set$date, interactions = mang.data.set$supplant.sent, observation.time = mang.data.set$observation.time.with.assistants, k.seq = 0.01, j = 100, plot.col = 'yellow',behaviour = 'supplant')
 
 
 all.mang = do.call(rbind, list(mang.consistency.grooming$consistency,
@@ -81,16 +81,16 @@ mang.stand = rbind(mang.consistency.grooming$standardised,
                    mang.consistency.aggression.noncontact$standardised,
                    mang.consistency.aggression$standardised,
                    mang.consistency.supplant$standardised)
-mang.stand$behaviour = c('grooming', 'body contact', 'proximity', 'noncontact aggression', 'contact aggression', 'aggression', 'supplant')
+mang.stand$behaviour = c('grooming', 'body contact', 'proximity', 'contact aggression', 'noncontact aggression', 'aggression', 'supplant')
 
-south.consistency.grooming = consistency(individual1 = south.data.set$individual1, individual2 = south.data.set$individual2, date = south.data.set$date, interactions = south.data.set$grooming.sent, observation.time = south.data.set$obs.time.with.ass, k.seq = 0.02, j = 1000, plot.col = 'blue', behaviour = 'grooming')
-south.consistency.aggression.contact = consistency(individual1 = south.data.set$individual1, individual2 = south.data.set$individual2, date = south.data.set$date, interactions = south.data.set$aggression.nonphysical.sent, observation.time = south.data.set$obs.time.with.ass, k.seq = 0.02, j = 1000, plot.col = 'blue',behaviour = 'contact aggression')
-south.consistency.aggression.noncontact = consistency(individual1 = south.data.set$individual1, individual2 = south.data.set$individual2, date = south.data.set$date, interactions = south.data.set$aggression.physical.sent, observation.time = south.data.set$obs.time.with.ass, k.seq = 0.02, j = 1000, plot.col = 'blue',behaviour = 'noncontact aggression')
-south.consistency.aggression = consistency(individual1 = south.data.set$individual1, individual2 = south.data.set$individual2, date = south.data.set$date, interactions = south.data.set$aggression.physical.sent + south.data.set$aggression.nonphysical.sent, observation.time = south.data.set$obs.time.with.ass, k.seq = 0.02, j = 1000, plot.col = 'blue',behaviour = 'aggression')
-south.consistency.proximity = consistency(individual1 = south.data.set$individual1, individual2 = south.data.set$individual2, date = south.data.set$date, undirectional = TRUE,  interactions = south.data.set$proximity3m, observation.time = south.data.set$obs.time.without.ass, k.seq = 0.02, j = 1000, plot.col = 'blue',behaviour = 'proximity', average.duration = sum(south.data.set$proximity3m)/sum(south.data.set$proximity3m.interactions))
-south.consistency.bodycontact = consistency(individual1 = south.data.set$individual1, individual2 = south.data.set$individual2, date = south.data.set$date, undirectional = TRUE, interactions = south.data.set$proximity, observation.time = south.data.set$obs.time.without.ass, k.seq = 0.02, j = 1000, plot.col = 'blue',behaviour = 'body contact', average.duration = sum(south.data.set$proximity)/sum(south.data.set$proximity.interactions))
-south.consistency.foodshare = consistency(individual1 = south.data.set$individual1, individual2 = south.data.set$individual2, date = south.data.set$date, interactions = south.data.set$food.share.sent, observation.time = south.data.set$obs.time.without.ass, k.seq = 0.02, j = 1000, plot.col = 'blue',behaviour = 'food sharing')
-south.consistency.pant = consistency(individual1 = south.data.set$individual1, individual2 = south.data.set$individual2, date = south.data.set$date, interactions = south.data.set$pant.grunt.sent, observation.time = south.data.set$obs.time.with.ass, k.seq = 0.02, j = 1000, plot.col = 'green',behaviour = 'pant grunt')
+south.consistency.grooming = consistency(individual1 = south.data.set$individual1, individual2 = south.data.set$individual2, date = south.data.set$date, interactions = south.data.set$grooming.sent, observation.time = south.data.set$obs.time.with.ass, k.seq = 0.01, j = 100, plot.col = 'blue', behaviour = 'grooming', average.duration = sum(south.data.set$grooming.sent)/sum(south.data.set$grooming.interactions.sent))
+south.consistency.aggression.contact = consistency(individual1 = south.data.set$individual1, individual2 = south.data.set$individual2, date = south.data.set$date, interactions = south.data.set$aggression.physical.sent, observation.time = south.data.set$obs.time.with.ass, k.seq = 0.01, j = 100, plot.col = 'blue',behaviour = 'contact aggression')
+south.consistency.aggression.noncontact = consistency(individual1 = south.data.set$individual1, individual2 = south.data.set$individual2, date = south.data.set$date, interactions = south.data.set$aggression.nonphysical.sent, observation.time = south.data.set$obs.time.with.ass, k.seq = 0.01, j = 100, plot.col = 'blue',behaviour = 'noncontact aggression')
+south.consistency.aggression = consistency(individual1 = south.data.set$individual1, individual2 = south.data.set$individual2, date = south.data.set$date, interactions = south.data.set$aggression.physical.sent + south.data.set$aggression.nonphysical.sent, observation.time = south.data.set$obs.time.with.ass, k.seq = 0.01, j = 100, plot.col = 'blue',behaviour = 'aggression')
+south.consistency.proximity = consistency(individual1 = south.data.set$individual1, individual2 = south.data.set$individual2, date = south.data.set$date, undirectional = TRUE,  interactions = south.data.set$proximity3m, observation.time = south.data.set$obs.time.without.ass, k.seq = 0.01, j = 100, plot.col = 'blue',behaviour = 'proximity', average.duration = sum(south.data.set$proximity3m)/sum(south.data.set$proximity3m.interactions))
+south.consistency.bodycontact = consistency(individual1 = south.data.set$individual1, individual2 = south.data.set$individual2, date = south.data.set$date, undirectional = TRUE, interactions = south.data.set$proximity, observation.time = south.data.set$obs.time.without.ass, k.seq = 0.01, j = 100, plot.col = 'blue',behaviour = 'body contact', average.duration = sum(south.data.set$proximity)/sum(south.data.set$proximity.interactions))
+south.consistency.foodshare = consistency(individual1 = south.data.set$individual1, individual2 = south.data.set$individual2, date = south.data.set$date, interactions = south.data.set$food.share.sent, observation.time = south.data.set$obs.time.without.ass, k.seq = 0.01, j = 100, plot.col = 'blue',behaviour = 'food sharing')
+south.consistency.pant = consistency(individual1 = south.data.set$individual1, individual2 = south.data.set$individual2, date = south.data.set$date, interactions = south.data.set$pant.grunt.sent, observation.time = south.data.set$obs.time.with.ass, k.seq = 0.01, j = 100, plot.col = 'green',behaviour = 'pant grunt')
 
 all.south = do.call(rbind, list(south.consistency.grooming$consistency,
                                south.consistency.aggression.contact$consistency,
@@ -121,487 +121,268 @@ south.stand = rbind(south.consistency.grooming$standardised,
                    south.consistency.aggression$standardised,
                    south.consistency.foodshare$standardised,
                    south.consistency.pant$standardised)
-south.stand$behaviour = c('grooming', 'body contact', 'proximity', 'noncontact aggression', 'contact aggression', 'aggression', 'food share', 'pant grunt')
+south.stand$behaviour = c('grooming', 'body contact', 'proximity', 'contact aggression', 'noncontact aggression', 'aggression', 'food share', 'pant grunt')
 
 
-south.means=aggregate(comp.south[,c("cor.groom","cor.prox","cor.dai","cor.prox3m","cor.aggtot", "cor.aggp", "cor.agg", "cor.food", "cor.pant", "groom.per.dyad", "prox.per.dyad", "prox3m.per.dyad", "aggtot.per.dyad","agg.per.dyad", "aggp.per.dyad", "food.per.dyad", "pant.per.dyad", "mean.obs.time")], by=list(comp.south$k), median, na.rm=T)
-east.means=aggregate(comp.east[,c("cor.groom","cor.prox","cor.dai","cor.prox3m","cor.aggtot", "cor.aggp", "cor.agg", "cor.food", "cor.pant", "groom.per.dyad", "prox.per.dyad", "prox3m.per.dyad", "aggtot.per.dyad","agg.per.dyad", "aggp.per.dyad", "food.per.dyad", "pant.per.dyad",  "mean.obs.time")], by=list(comp.east$k), median, na.rm=T)
-mang.means=aggregate(comp.mang[,c("cor.groom","cor.prox","cor.dai","cor.prox3m","cor.aggtot", "cor.aggp", "cor.agg", "cor.supplant", "groom.per.dyad", "prox.per.dyad", "prox3m.per.dyad", "aggtot.per.dyad","agg.per.dyad", "aggp.per.dyad", "supplant.per.dyad", "mean.obs.time")], by=list(comp.mang$k), median, na.rm=T)
+## grooming
+s.groomingeast = standardisation(consistency.frame = east.consistency.grooming$consistency)$ind.int
+s.groomingeast$group = 'east'
+s.groomingsouth = standardisation(consistency.frame = south.consistency.grooming$consistency)$ind.int
+s.groomingsouth$group = 'south'
+s.groomingmang = standardisation(consistency.frame = mang.consistency.grooming$consistency)$ind.int
+s.groomingmang$group = 'mangabey'
+s.grooming = rbind(s.groomingeast, s.groomingsouth, s.groomingmang)
+all.grooming  = rbind(
+  cbind(east.consistency.grooming$consistency, 
+        group = rep('east', nrow(east.consistency.grooming$consistency))),
+  cbind(south.consistency.grooming$consistency, 
+        group = rep('south', nrow(south.consistency.grooming$consistency))),
+  cbind(mang.consistency.grooming$consistency, 
+        group = rep('mangabey', nrow(mang.consistency.grooming$consistency)))
+  )
 
-south.ci=aggregate(comp.south[,c("cor.groom","cor.prox","cor.dai","cor.prox3m","cor.aggtot", "cor.aggp", "cor.agg", "cor.food", "cor.pant", "groom.per.dyad", "prox.per.dyad", "prox3m.per.dyad", "aggtot.per.dyad","agg.per.dyad", "aggp.per.dyad", "food.per.dyad", "pant.per.dyad", "mean.obs.time")], by=list(comp.south$k), quantile, probs = c(0.025, 0.975), na.rm=T)
-east.ci=aggregate(comp.east[,c("cor.groom","cor.prox","cor.dai","cor.prox3m","cor.aggtot", "cor.aggp", "cor.agg", "cor.food", "cor.pant", "groom.per.dyad", "prox.per.dyad", "prox3m.per.dyad", "aggtot.per.dyad","agg.per.dyad", "aggp.per.dyad", "food.per.dyad", "pant.per.dyad", "mean.obs.time")], by=list(comp.east$k), quantile, probs = c(0.025, 0.975), na.rm=T)
-mang.ci=aggregate(comp.mang[,c("cor.groom","cor.prox","cor.dai","cor.prox3m","cor.aggtot", "cor.aggp", "cor.agg", "cor.supplant", "groom.per.dyad", "prox.per.dyad", "prox3m.per.dyad", "aggtot.per.dyad","agg.per.dyad", "aggp.per.dyad", "supplant.per.dyad", "mean.obs.time")], by=list(comp.mang$k), quantile, probs = c(0.025, 0.975), na.rm=T)
-
-test.frame.east$dyad.dir=apply(cbind(as.character(test.frame.east$id1), as.character(test.frame.east$id2)), 1, function(x){paste(x, collapse="_")})
-test.frame.south$dyad.dir=apply(cbind(as.character(test.frame.south$id1), as.character(test.frame.south$id2)), 1, function(x){paste(x, collapse="_")})
-test.frame.mang$dyad.dir=apply(cbind(as.character(test.frame.mang$id1), as.character(test.frame.mang$id2)), 1, function(x){paste(x, collapse="_")})
-
-tiff("Y:/primint/Alex/Paper 3/Plots/Halves South.tiff", width = 8, height = 6, units = 'in', res = 300)
-library(scales)
-par(mfrow=c(2, 3))
-par(mar=c(2,2,2,2))
-plot(x=comp.south$groom.per.dyad, y=comp.south$cor.groom, ylim=c(-0.1,1), xlim=c(0,30),pch=19, cex=1, col=alpha(col="darkgoldenrod3", alpha=0.2),  ylab="Spearman rank correlation coefficient", xlab="Interactions per Dyad", main = "Grooming")
-abline(h=0.5, lty=3, lwd=1)
-plot(x=comp.south$prox.per.dyad, y=comp.south$cor.prox, ylim=c(-0.1,1), xlim=c(0,30),pch=19, cex=1, col=alpha(col="darkgoldenrod3", alpha=0.2),  ylab="Spearman rank correlation coefficient", xlab="Interactions per Dyad", main = "Body Contact")
-abline(h=0.5, lty=3, lwd=1)
-plot(x=comp.south$prox3m.per.dyad, y=comp.south$cor.prox3m, ylim=c(-0.1,1), xlim=c(0,30),pch=19, cex=1,  col=alpha(col="darkgoldenrod3", alpha=0.2),  ylab="Spearman rank correlation coefficient", xlab="Interactions per Dyad", main = "Proximity")
-abline(h=0.5, lty=3, lwd=1)
-plot(x=comp.south$aggtot.per.dyad, y=comp.south$cor.aggtot, ylim=c(-0.1,1), xlim=c(0,10),pch=19, cex=1,  col=alpha(col="darkgoldenrod3", alpha=0.2),  ylab="Spearman rank correlation coefficient", xlab="Interactions per Dyad", main = "Aggression")
-abline(h=0.5, lty=3, lwd=1)
-plot(x=comp.south$pant.per.dyad, y=comp.south$cor.pant, ylim=c(-0.1,1), xlim=c(0,30),pch=19, cex=1,  col=alpha(col="darkgoldenrod3", alpha=0.2),  ylab="Spearman rank correlation coefficient", xlab="Interactions per Dyad", main = "Pant Grunts/Supplants")
-abline(h=0.5, lty=3, lwd=1)
-plot(x=comp.south$food.per.dyad, y=comp.south$cor.food, ylim=c(-0.1,1), xlim=c(0,2),pch=19, cex=1,  col=alpha(col="darkgoldenrod3", alpha=0.2),  ylab="Spearman rank correlation coefficient", xlab="Interactions per Dyad", main = "Food Share")
-abline(h=0.5, lty=3, lwd=1)
-dev.off()
-
-library(scales)
-tiff("Y:/primint/Alex/Paper 3/Plots/Halves All.tiff", width = 8, height = 6, units = 'in', res = 300)
-par(mfrow=c(2, 3))
-par(mar=c(2,2,2,2))
-plot(x=comp.east$groom.per.dyad, y=comp.east$cor.groom, ylim=c(-0.1,1), xlim=c(0,30),pch=19, cex=1, col=alpha(col="darkgoldenrod3", alpha=0.2),  ylab="Spearman rank correlation coefficient", xlab="Interactions per Dyad", main = "Grooming")
-points(x=comp.south$groom.per.dyad, y=comp.south$cor.groom, pch=19, cex=1, col=alpha(col="blue", alpha=0.2))
-points(x=comp.mang$groom.per.dyad, y=comp.mang$cor.groom, pch=19, cex=1, col=alpha(col="green", alpha=0.2))
-abline(h=0.5, lty=3, lwd=1)
-plot(x=comp.east$prox.per.dyad, y=comp.east$cor.prox, ylim=c(-0.1,1), xlim=c(0,30),pch=19, cex=1, col=alpha(col="darkgoldenrod3", alpha=0.2),  ylab="Spearman rank correlation coefficient", xlab="Interactions per Dyad", main = "Body Contact")
-points(x=comp.south$prox.per.dyad, y=comp.south$cor.prox, pch=19, cex=1, col=alpha(col="blue", alpha=0.2))
-points(x=comp.mang$prox.per.dyad, y=comp.mang$cor.prox, pch=19, cex=1, col=alpha(col="green", alpha=0.2))
-abline(h=0.5, lty=3, lwd=1)
-plot(x=comp.east$prox3m.per.dyad, y=comp.east$cor.prox3m, ylim=c(-0.1,1), xlim=c(0,30),pch=19, cex=1,  col=alpha(col="darkgoldenrod3", alpha=0.2),  ylab="Spearman rank correlation coefficient", xlab="Interactions per Dyad", main = "Proximity")
-points(x=comp.south$prox3m.per.dyad, y=comp.south$cor.prox3m, pch=19, cex=1, col=alpha(col="blue", alpha=0.2))
-points(x=comp.mang$prox3m.per.dyad, y=comp.mang$cor.prox3m, pch=19, cex=1, col=alpha(col="green", alpha=0.2))
-abline(h=0.5, lty=3, lwd=1)
-plot(x=comp.east$aggtot.per.dyad, y=comp.east$cor.aggtot, ylim=c(-0.1,1), xlim=c(0,10),pch=19, cex=1,  col=alpha(col="darkgoldenrod3", alpha=0.2),  ylab="Spearman rank correlation coefficient", xlab="Interactions per Dyad", main = "Aggression")
-points(x=comp.south$aggtot.per.dyad, y=comp.south$cor.aggtot, pch=19, cex=1, col=alpha(col="blue", alpha=0.2))
-points(x=comp.mang$aggtot.per.dyad, y=comp.mang$cor.aggtot, pch=19, cex=1, col=alpha(col="green", alpha=0.2))
-abline(h=0.5, lty=3, lwd=1)
-plot(x=comp.east$pant.per.dyad, y=comp.east$cor.pant, ylim=c(-0.1,1), xlim=c(0,30),pch=19, cex=1,  col=alpha(col="darkgoldenrod3", alpha=0.2),  ylab="Spearman rank correlation coefficient", xlab="Interactions per Dyad", main = "Pant Grunts/Supplants")
-points(x=comp.south$pant.per.dyad, y=comp.south$cor.pant, pch=19, cex=1, col=alpha(col="blue", alpha=0.2))
-points(x=comp.mang$supplant.per.dyad, y=comp.mang$cor.supplant, pch=19, cex=1, col=alpha(col="green", alpha=0.2))
-abline(h=0.5, lty=3, lwd=1)
-plot(x=comp.east$food.per.dyad, y=comp.east$cor.food, ylim=c(-0.1,1), xlim=c(0,2),pch=19, cex=1,  col=alpha(col="darkgoldenrod3", alpha=0.2),  ylab="Spearman rank correlation coefficient", xlab="Interactions per Dyad", main = "Food Share")
-points(x=comp.south$food.per.dyad, y=comp.south$cor.food, pch=19, cex=1, col=alpha(col="blue", alpha=0.2))
-legend("topright", col = c("green", "darkgoldenrod3", "blue"), legend = c("Mangabey", "East", "South"), pch=19)
-abline(h=0.5, lty=3, lwd=1)
-dev.off()
-library(scales)
-tiff("Y:/primint/Alex/Paper 3/Plots/Labels.tiff", width = 8, height = 6, units = 'in', res = 300)
-plot(x=comp.east$food.per.dyad, y=comp.east$cor.food, ylim=c(-0.1,1), xlim=c(0,2),pch=19, cex=1,  col=alpha(col="darkgoldenrod3", alpha=0.2),  ylab="Spearman rank correlation coefficient", xlab="Interactions per Dyad", main = "Food Share")
-dev.off()
+grooming.plot = ggplot(all.grooming  %>%
+                             sample_frac(0.4, replace = T),
+                           aes(x = interactions.per.dyad, y = cor.halves, color = group)) +
+  geom_point(alpha = 0.6, size = 1) + ylim(0,1) + xlim(0,10) +
+  geom_hline(aes(yintercept = 0.5), linetype = 2) +
+  geom_line(s.grooming, mapping = aes(x = average.interactions.per.dyad, y = average.median, color = as.factor(group)), size = 1.5) +
+  geom_errorbar(s.grooming, mapping = aes(x = average.interactions.per.dyad, y = average.median, ymin=average.median-sd, ymax=average.median+sd, color = as.factor(group)), width=.5,
+                position=position_dodge(0.05)) +
+  #facet_grid(cols = vars(group)) +
+  theme_classic()  + labs(y = "Spearman Correlation Coefficient", x = 'Interactions per Dyad') +
+  scale_color_manual(name = 'Group', values = c("red", "blue", "gold")) +
+  ggtitle('Grooming')
 
 
-tiff("Y:/primint/Alex/Paper 3/Plots/Halves Mangabey.tiff", width = 8, height = 6, units = 'in', res = 300)
-par(mfrow=c(2, 2), mar=c(2,2,2,2))
-plot(x=comp.mang$groom.per.dyad, y=comp.mang$cor.groom, ylim=c(-0.1,1), xlim=c(0,10),pch=19, cex=1, col=alpha(col="darkgoldenrod3", alpha=0.2),  ylab="Spearman rank correlation coefficient", xlab="Interactions per Dyad", main = "Grooming")
-abline(h=0.5, lty=3, lwd=1)
-plot(x=comp.mang$prox.per.dyad, y=comp.mang$cor.prox, ylim=c(-0.1,1), xlim=c(0,10),pch=19, cex=1, col=alpha(col="darkgoldenrod3", alpha=0.2),  ylab="Spearman rank correlation coefficient", xlab="Interactions per Dyad", main = "Body Contact")
-abline(h=0.5, lty=3, lwd=1)
-plot(x=comp.mang$aggtot.per.dyad, y=comp.mang$cor.aggtot, ylim=c(-0.1,1), xlim=c(0,10),pch=19, cex=1,  col=alpha(col="darkgoldenrod3", alpha=0.2),  ylab="Spearman rank correlation coefficient", xlab="Interactions per Dyad", main = "Noncontact Aggression")
-abline(h=0.5, lty=3, lwd=1)
-plot(x=comp.mang$aggp.per.dyad, y=comp.mang$cor.aggp, ylim=c(-0.1,1), xlim=c(0,10),pch=19, cex=1,  col=alpha(col="darkgoldenrod3", alpha=0.2),  ylab="Spearman rank correlation coefficient", xlab="Interactions per Dyad", main = "Contact Aggression")
-abline(h=0.5, lty=3, lwd=1)
-dev.off()
-
-
-
-library("scales", lib.loc="~/R/win-library/3.5")
-tiff("Y:/primint/Alex/Paper 3/Plots/Comparison Grooming.tiff", width = 8, height = 6, units = 'in', res = 300)
-par(mfrow=c(1,3),mar=c(4,4,2,2))
-plot(x=comp.mang$groom.per.dyad, y=comp.mang$cor.groom, ylim=c(-0.1,1), xlim=c(0,10),pch=19, cex=1, col=scales::alpha("blue", alpha=0.4),  ylab="Spearman rank correlation coefficient", xlab="Interactions per Dyad", main = "Mangabey")
-abline(h=0.5, lty=3, lwd=1)
-plot(x=comp.east$groom.per.dyad, y=comp.east$cor.groom, ylim=c(-0.1,1), xlim=c(0,10), pch=19, cex=1, col=scales::alpha("red", alpha=0.4),  ylab="", xlab="Interactions per Dyad", main = "East")
-abline(h=0.5, lty=3, lwd=1)
-plot(x=comp.south$groom.per.dyad, y=comp.south$cor.groom, ylim=c(-0.1,1), xlim=c(0,10), pch=19, cex=1, col=scales::alpha("black", alpha=0.4),  ylab="", xlab="Interactions per Dyad", main = "South")
-abline(h=0.5, lty=3, lwd=1)
-dev.off()
-
-tiff("Y:/primint/Alex/Paper 3/Plots/Comparison Aggression.tiff", width = 8, height = 6, units = 'in', res = 300)
-par(mfrow=c(1,3),mar=c(4,4,2,2))
-plot(x=comp.mang$aggtot.per.dyad, y=comp.mang$cor.aggtot, ylim=c(-0.1,1), xlim=c(0,10),pch=19, cex=1, col=scales::alpha("blue", alpha=0.4),  ylab="Spearman rank correlation coefficient", xlab="Interactions per Dyad", main = "Mangabey")
-abline(h=0.5, lty=3, lwd=1)
-plot(x=comp.east$aggtot.per.dyad, y=comp.east$cor.aggtot, ylim=c(-0.1,1), xlim=c(0,10), pch=19, cex=1, col=scales::alpha("red", alpha=0.4),  ylab="", xlab="Interactions per Dyad", main = "East")
-abline(h=0.5, lty=3, lwd=1)
-plot(x=comp.south$aggtot.per.dyad, y=comp.south$cor.aggtot, ylim=c(-0.1,1), xlim=c(0,10), pch=19, cex=1, col=scales::alpha("black", alpha=0.4),  ylab="", xlab="Interactions per Dyad", main = "South")
-abline(h=0.5, lty=3, lwd=1)
-dev.off()
-
-tiff("Y:/primint/Alex/Paper 3/Plots/Comparison Contact.tiff", width = 8, height = 6, units = 'in', res = 300)
-par(mfrow=c(1,3),mar=c(4,4,2,2))
-plot(x=comp.mang$prox.per.dyad, y=comp.mang$cor.prox, ylim=c(-0.1,1), xlim=c(0,30),pch=19, cex=1, col=scales::alpha("blue", alpha=0.4),  ylab="Spearman rank correlation coefficient", xlab="Interactions per Dyad", main = "Mangabey")
-abline(h=0.5, lty=3, lwd=1)
-plot(x=comp.east$prox.per.dyad, y=comp.east$cor.prox, ylim=c(-0.1,1), xlim=c(0,30), pch=19, cex=1, col=scales::alpha("red", alpha=0.4),  ylab="", xlab="Interactions per Dyad", main = "East")
-abline(h=0.5, lty=3, lwd=1)
-plot(x=comp.south$prox.per.dyad, y=comp.south$cor.prox, ylim=c(-0.1,1), xlim=c(0,30), pch=19, cex=1, col=scales::alpha("black", alpha=0.4),  ylab="", xlab="Interactions per Dyad", main = "South")
-abline(h=0.5, lty=3, lwd=1)
-dev.off()
-
-tiff("Y:/primint/Alex/Paper 3/Plots/Comparison Proximity.tiff", width = 8, height = 6, units = 'in', res = 300)
-par(mfrow=c(1,3),mar=c(4,4,2,2))
-plot(x=comp.mang$prox3m.per.dyad, y=comp.mang$cor.prox3m, ylim=c(-0.1,1), xlim=c(0,30),pch=19, cex=1, col=scales::alpha("blue", alpha=0.4),  ylab="Spearman rank correlation coefficient", xlab="Interactions per Dyad", main = "Mangabey")
-abline(h=0.5, lty=3, lwd=1)
-plot(x=comp.east$prox3m.per.dyad, y=comp.east$cor.prox3m, ylim=c(-0.1,1), xlim=c(0,30), pch=19, cex=1, col=scales::alpha("red", alpha=0.4),  ylab="", xlab="Interactions per Dyad", main = "East")
-abline(h=0.5, lty=3, lwd=1)
-plot(x=comp.south$prox3m.per.dyad, y=comp.south$cor.prox3m, ylim=c(-0.1,1), xlim=c(0,30), pch=19, cex=1, col=scales::alpha("black", alpha=0.4),  ylab="", xlab="Interactions per Dyad", main = "South")
-abline(h=0.5, lty=3, lwd=1)
-dev.off()
-
-tiff("Y:/primint/Alex/Paper 3/Plots/Comparison Pant.tiff", width = 8, height = 6, units = 'in', res = 300)
-par(mfrow=c(1,3),mar=c(4,4,2,2))
-plot(x=comp.mang$supplant.per.dyad, y=comp.mang$cor.supplant, ylim=c(-0.1,1), xlim=c(0,30),pch=19, cex=1, col=scales::alpha("blue", alpha=0.4),  ylab="Spearman rank correlation coefficient", xlab="Interactions per Dyad", main = "Mangabey")
-abline(h=0.5, lty=3, lwd=1)
-plot(x=comp.east$pant.per.dyad, y=comp.east$cor.pant, ylim=c(-0.1,1), xlim=c(0,30), pch=19, cex=1, col=scales::alpha("red", alpha=0.4),  ylab="", xlab="Interactions per Dyad", main = "East")
-abline(h=0.5, lty=3, lwd=1)
-plot(x=comp.south$pant.per.dyad, y=comp.south$cor.pant, ylim=c(-0.1,1), xlim=c(0,30), pch=19, cex=1, col=scales::alpha("black", alpha=0.4),  ylab="", xlab="Interactions per Dyad", main = "South")
-abline(h=0.5, lty=3, lwd=1)
-dev.off()
-
-#
-# tiff("Y:/primint/Alex/Paper 3/Plots/Consistency all.tiff", width = 14, height = 10, units = 'in', res = 300)
-# par(mfrow=c(1, 3), mar=c(4,5,2,4))
-#####Mangabey Summary
-tiff("Y:/primint/Alex/Paper 3/Plots/Consistency Mangabey.tiff", width = 8, height = 6, units = 'in', res = 300)
-par(mar=c(4,3,2,6), xpd=F)
-plot(x=0, y=0, ylim=c(-0.1,1), xlim=c(0,1), pch=19, col="white", ylab="Consistency", xlab="Subset Size", main = "Mangabey", cex.lab=2, cex.axis=2, cex.main=2, cex.sub=2)
-abline(h=0.5, lty=3, lwd=1)
-lines(x=(mang.means$groom.per.dyad/max(mang.means$groom.per.dyad)), y=mang.means$cor.groom, lwd=2, lty=1, col="blue")
-polygon(x=c(mang.ci$Group.1, rev(mang.ci$Group.1)), y=c(mang.ci$cor.groom[, 1], rev(mang.ci$cor.groom[, 2])),
-        border=NA, col=adjustcolor(col=c("blue"), alpha.f=0.3))
-# lines(x=(mang.means$food.per.dyad/max(mang.means$food.per.dyad)), y=mang.means$cor.food, lwd=2, lty=1, col="red")
-# polygon(x=c(mang.ci$Group.1, rev(mang.ci$Group.1)), y=c(mang.ci$cor.food[, 1], rev(mang.ci$cor.food[, 2])),
-#         border=NA, col=adjustcolor(col=c("red"), alpha.f=0.3))
-lines(x=(mang.means$aggtot.per.dyad/max(mang.means$aggtot.per.dyad)), y=mang.means$cor.aggtot, lwd=2, lty=1, col="darkgreen")
-polygon(x=c(mang.ci$Group.1, rev(mang.ci$Group.1)), y=c(mang.ci$cor.aggtot[, 1], rev(mang.ci$cor.aggtot[, 2])),
-        border=NA, col=adjustcolor(col=c("darkgreen"), alpha.f=0.3))
-# lines(x=(mang.means$aggp.per.dyad/max(mang.means$aggp.per.dyad)), y=mang.means$cor.aggp, lwd=2, lty=1, col="green")
-# polygon(x=c(mang.ci$Group.1, rev(mang.ci$Group.1)), y=c(mang.ci$cor.aggp[, 1], rev(mang.ci$cor.aggp[, 2])),
-#         border=NA, col=adjustcolor(col=c("green"), alpha.f=0.3))
-# lines(x=(mang.means$agg.per.dyad/max(mang.means$agg.per.dyad)), y=mang.means$cor.agg, lwd=2, lty=1, col="darkgreen")
-# polygon(x=c(mang.ci$Group.1, rev(mang.ci$Group.1)), y=c(mang.ci$cor.agg[, 1], rev(mang.ci$cor.agg[, 2])),
-#         border=NA, col=adjustcolor(col=c("darkgreen"), alpha.f=0.3))
-lines(x=(mang.means$prox.per.dyad/max(mang.means$prox.per.dyad)), y=mang.means$cor.prox, lwd=2, lty=1, col="sandybrown")
-polygon(x=c(mang.ci$Group.1, rev(mang.ci$Group.1)), y=c(mang.ci$cor.prox[, 1], rev(mang.ci$cor.prox[, 2])),
-        border=NA, col=adjustcolor(col=c("sandybrown"), alpha.f=0.3))
-lines(x=(mang.means$prox3m.per.dyad/max(mang.means$prox3m.per.dyad)), y=mang.means$cor.prox3m, lwd=2, lty=1, col="brown")
-polygon(x=c(mang.ci$Group.1, rev(mang.ci$Group.1)), y=c(mang.ci$cor.prox3m[, 1], rev(mang.ci$cor.prox3m[, 2])),
-        border=NA, col=adjustcolor(col=c("brown"), alpha.f=0.3))
-lines(x=(mang.means$supplant.per.dyad/max(mang.means$supplant.per.dyad)), y=mang.means$cor.supplant, lwd=2, lty=1, col="purple")
-polygon(x=c(mang.ci$Group.1, rev(mang.ci$Group.1)), y=c(mang.ci$cor.supplant[, 1], rev(mang.ci$cor.supplant[, 2])),
-        border=NA, col=adjustcolor(col=c("purple"), alpha.f=0.3))
-lines(x=(mang.means$mean.obs.time/max(mang.means$mean.obs.time)), y=mang.means$cor.dai, lwd=2, lty=1, col="grey")
-polygon(x=c(mang.ci$Group.1, rev(mang.ci$Group.1)), y=c(mang.ci$cor.dai[, 1], rev(mang.ci$cor.dai[, 2])),
-        border=NA, col=grey(level=0.6, alpha=0.2))
-# legend("topright", inset=c(-0.2,0), legend=c("Grooming","Agg Contact", "Agg Noncontact", "Close Contact", "Proximity", "DAI"), lwd=2,cex = 0.65, col = c("blue","green", "darkgreen", "sandybrown", "brown", "grey))
-# dev.off()
-
-
-#####East Summary
-# tiff("Y:/primint/Alex/Paper 3/Plots/Consistency East.tiff", width = 8, height = 6, units = 'in', res = 300)
-par(mar=c(4,5,2,4), xpd=F)
-plot(x=0, y=0, ylim=c(-0.1,1), xlim=c(0,1), pch=19, col="white", ylab="Consistency", main = "East", xlab="Subset Size", cex.lab=2, cex.axis=2, cex.main=2, cex.sub=2)
-abline(h=0.5, lty=3, lwd=1)
-lines(x=(east.means$groom.per.dyad/max(east.means$groom.per.dyad)), y=east.means$cor.groom, lwd=2, lty=1, col="blue")
-polygon(x=c(east.ci$Group.1, rev(east.ci$Group.1)), y=c(east.ci$cor.groom[, 1], rev(east.ci$cor.groom[, 2])),
-        border=NA, col=adjustcolor(col=c("blue"), alpha.f=0.3))
-lines(x=(east.means$food.per.dyad/max(east.means$food.per.dyad)), y=east.means$cor.food, lwd=2, lty=1, col="red")
-polygon(x=c(east.ci$Group.1, rev(east.ci$Group.1)), y=c(east.ci$cor.food[, 1], rev(east.ci$cor.food[, 2])),
-        border=NA, col=adjustcolor(col=c("red"), alpha.f=0.3))
-# lines(x=(east.means$aggtot.per.dyad/max(east.means$aggtot.per.dyad)), y=east.means$cor.aggtot, lwd=2, lty=1, col="lawngreen")
-# polygon(x=c(east.ci$Group.1, rev(east.ci$Group.1)), y=c(east.ci$cor.aggtot[, 1], rev(east.ci$cor.aggtot[, 2])),
-#         border=NA, col=adjustcolor(col=c("lawngreen"), alpha.f=0.3))
-lines(x=(east.means$aggp.per.dyad/max(east.means$aggp.per.dyad)), y=east.means$cor.aggp, lwd=2, lty=1, col="green")
-polygon(x=c(east.ci$Group.1, rev(east.ci$Group.1)), y=c(east.ci$cor.aggp[, 1], rev(east.ci$cor.aggp[, 2])),
-        border=NA, col=adjustcolor(col=c("green"), alpha.f=0.3))
-lines(x=(east.means$agg.per.dyad/max(east.means$agg.per.dyad)), y=east.means$cor.agg, lwd=2, lty=1, col="darkgreen")
-polygon(x=c(east.ci$Group.1, rev(east.ci$Group.1)), y=c(east.ci$cor.agg[, 1], rev(east.ci$cor.agg[, 2])),
-        border=NA, col=adjustcolor(col=c("darkgreen"), alpha.f=0.3))
-lines(x=(east.means$prox.per.dyad/max(east.means$prox.per.dyad)), y=east.means$cor.prox, lwd=2, lty=1, col="sandybrown")
-polygon(x=c(east.ci$Group.1, rev(east.ci$Group.1)), y=c(east.ci$cor.prox[, 1], rev(east.ci$cor.prox[, 2])),
-        border=NA, col=adjustcolor(col=c("sandybrown"), alpha.f=0.3))
-lines(x=(east.means$prox3m.per.dyad/max(east.means$prox3m.per.dyad)), y=east.means$cor.prox3m, lwd=2, lty=1, col="brown")
-polygon(x=c(east.ci$Group.1, rev(east.ci$Group.1)), y=c(east.ci$cor.prox3m[, 1], rev(east.ci$cor.prox3m[, 2])),
-        border=NA, col=adjustcolor(col=c("brown"), alpha.f=0.3))
-lines(x=(east.means$pant.per.dyad/max(east.means$pant.per.dyad)), y=east.means$cor.pant, lwd=2, lty=1, col="purple")
-polygon(x=c(east.ci$Group.1, rev(east.ci$Group.1)), y=c(east.ci$cor.pant[, 1], rev(east.ci$cor.pant[, 2])),
-        border=NA, col=adjustcolor(col=c("purple"), alpha.f=0.3))
-lines(x=(east.means$mean.obs.time/max(east.means$mean.obs.time)), y=east.means$cor.dai, lwd=2, lty=1, col="grey")
-polygon(x=c(east.ci$Group.1, rev(east.ci$Group.1)), y=c(east.ci$cor.dai[, 1], rev(east.ci$cor.dai[, 2])),
-        border=NA, col=grey(level=0.6, alpha=0.2))
-# legend("topright", inset=c(-0.2,0), legend=c("Grooming","Food Share", "Agg Contact", "Agg Noncontact", "Close Contact", "Proximity"), lwd=2,cex = 0.65, col = c("blue","red","green", "darkgreen", "sandybrown", "brown"))
-# dev.off()
-
-
-
-#####South Summary
-# tiff("Y:/primint/Alex/Paper 3/Plots/Consistency South.tiff", width = 8, height = 6, units = 'in', res = 300)
-par(mar=c(4,5,2,4), xpd=F)
-plot(x=0, y=0, ylim=c(-0.1,1), xlim=c(0,1), pch=19, col="white",  ylab="Consistency", xlab="Subset Size", main = "South", cex.lab=2, cex.axis=2, cex.main=2, cex.sub=2)
-abline(h=0.5, lty=3, lwd=1)
-lines(x=(south.means$groom.per.dyad/max(south.means$groom.per.dyad)), y=south.means$cor.groom, lwd=2, lty=1, col="blue")
-polygon(x=c(south.ci$Group.1, rev(south.ci$Group.1)), y=c(south.ci$cor.groom[, 1], rev(south.ci$cor.groom[, 2])),
-        border=NA, col=adjustcolor(col=c("blue"), alpha.f=0.3))
-lines(x=(south.means$food.per.dyad/max(south.means$food.per.dyad)), y=south.means$cor.food, lwd=2, lty=1, col="red")
-polygon(x=c(south.ci$Group.1, rev(south.ci$Group.1)), y=c(south.ci$cor.food[, 1], rev(south.ci$cor.food[, 2])),
-        border=NA, col=adjustcolor(col=c("red"), alpha.f=0.3))
-# lines(x=(south.means$aggtot.per.dyad/max(south.means$aggtot.per.dyad)), y=south.means$cor.aggtot, lwd=2, lty=1, col="lawngreen")
-# polygon(x=c(south.ci$Group.1, rev(south.ci$Group.1)), y=c(south.ci$cor.aggtot[, 1], rev(south.ci$cor.aggtot[, 2])),
-#         border=NA, col=adjustcolor(col=c("lawngreen"), alpha.f=0.3))
-lines(x=(south.means$aggp.per.dyad/max(south.means$aggp.per.dyad)), y=south.means$cor.aggp, lwd=2, lty=1, col="green")
-polygon(x=c(south.ci$Group.1, rev(south.ci$Group.1)), y=c(south.ci$cor.aggp[, 1], rev(south.ci$cor.aggp[, 2])),
-        border=NA, col=adjustcolor(col=c("green"), alpha.f=0.3))
-lines(x=(south.means$agg.per.dyad/max(south.means$agg.per.dyad)), y=south.means$cor.agg, lwd=2, lty=1, col="darkgreen")
-polygon(x=c(south.ci$Group.1, rev(south.ci$Group.1)), y=c(south.ci$cor.agg[, 1], rev(south.ci$cor.agg[, 2])),
-        border=NA, col=adjustcolor(col=c("darkgreen"), alpha.f=0.3))
-lines(x=(south.means$prox.per.dyad/max(south.means$prox.per.dyad)), y=south.means$cor.prox, lwd=2, lty=1, col="sandybrown")
-polygon(x=c(south.ci$Group.1, rev(south.ci$Group.1)), y=c(south.ci$cor.prox[, 1], rev(south.ci$cor.prox[, 2])),
-        border=NA, col=adjustcolor(col=c("sandybrown"), alpha.f=0.3))
-lines(x=(south.means$prox3m.per.dyad/max(south.means$prox3m.per.dyad)), y=south.means$cor.prox3m, lwd=2, lty=1, col="brown")
-polygon(x=c(south.ci$Group.1, rev(south.ci$Group.1)), y=c(south.ci$cor.prox3m[, 1], rev(south.ci$cor.prox3m[, 2])),
-        border=NA, col=adjustcolor(col=c("brown"), alpha.f=0.3))
-lines(x=(south.means$pant.per.dyad/max(south.means$pant.per.dyad)), y=south.means$cor.pant, lwd=2, lty=1, col="purple")
-polygon(x=c(south.ci$Group.1, rev(south.ci$Group.1)), y=c(south.ci$cor.pant[, 1], rev(south.ci$cor.pant[, 2])),
-        border=NA, col=adjustcolor(col=c("purple"), alpha.f=0.3))
-lines(x=(south.means$mean.obs.time/max(south.means$mean.obs.time)), y=south.means$cor.dai, lwd=2, lty=1, col="grey")
-polygon(x=c(south.ci$Group.1, rev(south.ci$Group.1)), y=c(south.ci$cor.dai[, 1], rev(south.ci$cor.dai[, 2])),
-        border=NA, col=grey(level=0.6, alpha=0.2))
-# legend("topright", inset=c(-0.2,0), legend=c("Grooming","Food Share", "Agg Contact", "Agg Noncontact", "Close Contact", "Proximity"), lwd=2,cex = 0.65, col = c("blue","red","green", "darkgreen", "sandybrown", "brown"))
-dev.off()
-
-tiff("Y:/primint/Alex/Paper 3/Plots/Consistency legend.tiff", width = 10, height = 10, units = 'in', res = 300)
-par(mar=c(4,4,4,4))
-plot(x=0, y=0, ylim=c(0,1), xlim=c(0,1), pch=19, col="white",  ylab="Consistency", xlab="", main = "Consistencies Mangabey")
-legend("topleft", legend=c("Grooming","Food Share", "Agg Contact", "Agg Noncontact", "Close Contact", "Proximity", "Pant Grunt", "DAI"), lwd=2,cex = 1, col = c("blue","red","green", "darkgreen", "sandybrown", "brown", "purple", "grey"))
-dev.off()
-
-#
-#
-#
-
-
-#### Make result table
-
-comp.east.s=comp.east
-comp.east.s[, 2:8]=round(comp.east[, 2:8], 1)
-comp.east.s$cor.aggtot=round(comp.east$cor.aggtot, 1)
-comp.east.s$cor.food=round(comp.east$cor.food, 1)
-comp.east.s$cor.pant=round(comp.east$cor.pant, 1)
-xx.east.groom = aggregate(comp.east.s$groom.per.dyad, by = list(comp.east.s$cor.groom), median, na.rm = T)
-xx.east.aggtot = aggregate(comp.east.s$aggtot.per.dyad, by = list(comp.east.s$cor.aggtot), median, na.rm = T)
-xx.east.aggp = aggregate(comp.east.s$aggp.per.dyad, by = list(comp.east.s$cor.aggp), median, na.rm = T)
-xx.east.agg = aggregate(comp.east.s$agg.per.dyad, by = list(comp.east.s$cor.agg), median, na.rm = T)
-xx.east.prox = aggregate(comp.east.s$prox.per.dyad, by = list(comp.east.s$cor.prox), median, na.rm = T)
-xx.east.prox3m = aggregate(comp.east.s$prox3m.per.dyad, by = list(comp.east.s$cor.prox3m), median, na.rm = T)
-xx.east.food = aggregate(comp.east.s$food.per.dyad, by = list(comp.east.s$cor.food), median, na.rm = T)
-xx.east.pant = aggregate(comp.east.s$pant.per.dyad, by = list(comp.east.s$cor.pant), median, na.rm = T)
-sd.east.groom = aggregate(comp.east.s$groom.per.dyad, by = list(comp.east.s$cor.groom), sd, na.rm = T)
-sd.east.aggtot = aggregate(comp.east.s$aggtot.per.dyad, by = list(comp.east.s$cor.aggtot), sd, na.rm = T)
-sd.east.aggp = aggregate(comp.east.s$aggp.per.dyad, by = list(comp.east.s$cor.aggp), sd, na.rm = T)
-sd.east.agg = aggregate(comp.east.s$agg.per.dyad, by = list(comp.east.s$cor.agg), sd, na.rm = T)
-sd.east.prox = aggregate(comp.east.s$prox.per.dyad, by = list(comp.east.s$cor.prox), sd, na.rm = T)
-sd.east.prox3m = aggregate(comp.east.s$prox3m.per.dyad, by = list(comp.east.s$cor.prox3m), sd, na.rm = T)
-sd.east.food = aggregate(comp.east.s$food.per.dyad, by = list(comp.east.s$cor.food), sd, na.rm = T)
-sd.east.pant = aggregate(comp.east.s$pant.per.dyad, by = list(comp.east.s$cor.pant), sd, na.rm = T)
-
-results=data.frame(group=sort(rep(c("East","South","Mangabey"), times=8)), behav=rep(sort(c(behaviours,"Aggression.total")),3), median.interactions=NA, sd.interactions=NA, cor.full=NA, interactions=NA)
-results$behav=as.character(results$behav)
-results$behav[results$group=="East" & results$behav=="Supplant"]="Pant Grunt"
-results$median.interactions[results$group=="East" & results$behav=="Grooming"]=xx.east.groom$x[which(xx.east.groom$Group.1 == 0.5)]
-results$median.interactions[results$group=="East" & results$behav=="Proximity"]=xx.east.prox$x[which(xx.east.prox$Group.1 == 0.5)]
-results$median.interactions[results$group=="East" & results$behav=="Proximity3m"]=xx.east.prox3m$x[which(xx.east.prox3m$Group.1 == 0.5)]
-results$median.interactions[results$group=="East" & results$behav=="Aggression.nonphysical"]=xx.east.agg$x[which(xx.east.agg$Group.1 == 0.5)]
-results$median.interactions[results$group=="East" & results$behav=="Aggression.total"]=xx.east.aggtot$x[which(xx.east.aggtot$Group.1 == 0.5)]
-results$median.interactions[results$group=="East" & results$behav=="Aggression.physical"]=xx.east.aggp$x[which(xx.east.aggp$Group.1 == 0.5)]
-results$median.interactions[results$group=="East" & results$behav=="Food Share"]=xx.east.food$x[which(xx.east.food$Group.1 == 0.5)]
-results$median.interactions[results$group=="East" & results$behav=="Pant Grunt"]=xx.east.pant$x[which(xx.east.pant$Group.1 == 0.5)]
-results$sd.interactions[results$group=="East" & results$behav=="Grooming"]=sd.east.groom$x[which(sd.east.groom$Group.1 == 0.5)]
-results$sd.interactions[results$group=="East" & results$behav=="Proximity"]=sd.east.prox$x[which(sd.east.prox$Group.1 == 0.5)]
-results$sd.interactions[results$group=="East" & results$behav=="Proximity3m"]=sd.east.prox3m$x[which(sd.east.prox3m$Group.1 == 0.5)]
-results$sd.interactions[results$group=="East" & results$behav=="Aggression.nonphysical"]=sd.east.agg$x[which(sd.east.agg$Group.1 == 0.5)]
-results$sd.interactions[results$group=="East" & results$behav=="Aggression.total"]=sd.east.aggtot$x[which(sd.east.aggtot$Group.1 == 0.5)]
-results$sd.interactions[results$group=="East" & results$behav=="Aggression.physical"]=sd.east.aggp$x[which(sd.east.aggp$Group.1 == 0.5)]
-results$sd.interactions[results$group=="East" & results$behav=="Food Share"]=sd.east.food$x[which(sd.east.food$Group.1 == 0.5)]
-results$sd.interactions[results$group=="East" & results$behav=="Pant Grunt"]=sd.east.pant$x[which(sd.east.pant$Group.1 == 0.5)]
-results$cor.full[results$group=="East" & results$behav=="Grooming"]=mean(comp.east$cor.groom[comp.east$k==1])
-results$cor.full[results$group=="East" & results$behav=="Proximity"]=mean(comp.east$cor.prox[comp.east$k==1])
-results$cor.full[results$group=="East" & results$behav=="Proximity3m"]=mean(comp.east$cor.prox3m[comp.east$k==1])
-results$cor.full[results$group=="East" & results$behav=="Aggression.nonphysical"]=mean(comp.east$cor.agg[comp.east$k==1])
-results$cor.full[results$group=="East" & results$behav=="Aggression.total"]=mean(comp.east$cor.aggtot[comp.east$k==1])
-results$cor.full[results$group=="East" & results$behav=="Aggression.physical"]=mean(comp.east$cor.aggp[comp.east$k==1])
-results$cor.full[results$group=="East" & results$behav=="Food Share"]=mean(comp.east$cor.food[comp.east$k==1])
-results$cor.full[results$group=="East" & results$behav=="Pant Grunt"]=mean(comp.east$cor.pant[comp.east$k==1])
-results$interactions[results$group=="East" & results$behav=="Grooming"]=sum(east.data.set$grooming.interactions.sent, na.rm = T)
-results$interactions[results$group=="East" & results$behav=="Proximity"]=sum(east.data.set$proximity.interactions, na.rm = T)/2
-results$interactions[results$group=="East" & results$behav=="Proximity3m"]=sum(east.data.set$proximity3m.interactions, na.rm = T)/2
-results$interactions[results$group=="East" & results$behav=="Aggression.nonphysical"]=sum(east.data.set$aggression.nonphysical.sent, na.rm = T)
-results$interactions[results$group=="East" & results$behav=="Aggression.total"]=sum(east.data.set$aggression.physical.sent+east.data.set$aggression.nonphysical.sent, na.rm = T)
-results$interactions[results$group=="East" & results$behav=="Aggression.physical"]=sum(east.data.set$aggression.physical.sent, na.rm = T)
-results$interactions[results$group=="East" & results$behav=="Food Share"]=sum(east.data.set$food.share.sent, na.rm = T)
-results$interactions[results$group=="East" & results$behav=="Pant Grunt"]=sum(east.data.set$pant.grunt.sent, na.rm = T)
-
-
-
-
-
-comp.south.s=comp.south
-comp.south.s[, 2:8]=round(comp.south[, 2:8], 1)
-comp.south.s$cor.aggtot=round(comp.south$cor.aggtot, 1)
-comp.south.s$cor.food=round(comp.south$cor.food, 1)
-comp.south.s$cor.pant=round(comp.south$cor.pant, 1)
-xx.south.groom = aggregate(comp.south.s$groom.per.dyad, by = list(comp.south.s$cor.groom), median, na.rm = T)
-xx.south.aggtot = aggregate(comp.south.s$aggtot.per.dyad, by = list(comp.south.s$cor.aggtot), median, na.rm = T)
-xx.south.aggp = aggregate(comp.south.s$aggp.per.dyad, by = list(comp.south.s$cor.aggp), median, na.rm = T)
-xx.south.agg = aggregate(comp.south.s$agg.per.dyad, by = list(comp.south.s$cor.agg), median, na.rm = T)
-xx.south.prox = aggregate(comp.south.s$prox.per.dyad, by = list(comp.south.s$cor.prox), median, na.rm = T)
-xx.south.prox3m = aggregate(comp.south.s$prox3m.per.dyad, by = list(comp.south.s$cor.prox3m), median, na.rm = T)
-xx.south.food = aggregate(comp.south.s$food.per.dyad, by = list(comp.south.s$cor.food), median, na.rm = T)
-xx.south.pant = aggregate(comp.south.s$pant.per.dyad, by = list(comp.south.s$cor.pant), median, na.rm = T)
-sd.south.groom = aggregate(comp.south.s$groom.per.dyad, by = list(comp.south.s$cor.groom), sd, na.rm = T)
-sd.south.aggtot = aggregate(comp.south.s$aggtot.per.dyad, by = list(comp.south.s$cor.aggtot), sd, na.rm = T)
-sd.south.aggp = aggregate(comp.south.s$aggp.per.dyad, by = list(comp.south.s$cor.aggp), sd, na.rm = T)
-sd.south.agg = aggregate(comp.south.s$agg.per.dyad, by = list(comp.south.s$cor.agg), sd, na.rm = T)
-sd.south.prox = aggregate(comp.south.s$prox.per.dyad, by = list(comp.south.s$cor.prox), sd, na.rm = T)
-sd.south.prox3m = aggregate(comp.south.s$prox3m.per.dyad, by = list(comp.south.s$cor.prox3m), sd, na.rm = T)
-sd.south.food = aggregate(comp.south.s$food.per.dyad, by = list(comp.south.s$cor.food), sd, na.rm = T)
-sd.south.pant = aggregate(comp.south.s$pant.per.dyad, by = list(comp.south.s$cor.pant), sd, na.rm = T)
-
-results$behav[results$group=="South" & results$behav=="Supplant"]="Pant Grunt"
-results$median.interactions[results$group=="South" & results$behav=="Grooming"]=xx.south.groom$x[which(xx.south.groom$Group.1 == 0.5)]
-results$median.interactions[results$group=="South" & results$behav=="Proximity"]=xx.south.prox$x[which(xx.south.prox$Group.1 == 0.5)]
-results$median.interactions[results$group=="South" & results$behav=="Proximity3m"]=xx.south.prox3m$x[which(xx.south.prox3m$Group.1 == 0.5)]
-results$median.interactions[results$group=="South" & results$behav=="Aggression.nonphysical"]=xx.south.agg$x[which(xx.south.agg$Group.1 == 0.5)]
-results$median.interactions[results$group=="South" & results$behav=="Aggression.total"]=xx.south.aggtot$x[which(xx.south.aggtot$Group.1 == 0.5)]
-results$median.interactions[results$group=="South" & results$behav=="Aggression.physical"]=xx.south.aggp$x[which(xx.south.aggp$Group.1 == 0.5)]
-results$median.interactions[results$group=="South" & results$behav=="Food Share"]=xx.south.food$x[which(xx.south.food$Group.1 == 0.5)]
-results$median.interactions[results$group=="South" & results$behav=="Pant Grunt"]=xx.south.pant$x[which(xx.south.pant$Group.1 == 0.5)]
-results$sd.interactions[results$group=="South" & results$behav=="Grooming"]=sd.south.groom$x[which(sd.south.groom$Group.1 == 0.5)]
-results$sd.interactions[results$group=="South" & results$behav=="Proximity"]=sd.south.prox$x[which(sd.south.prox$Group.1 == 0.5)]
-results$sd.interactions[results$group=="South" & results$behav=="Proximity3m"]=sd.south.prox3m$x[which(sd.south.prox3m$Group.1 == 0.5)]
-results$sd.interactions[results$group=="South" & results$behav=="Aggression.nonphysical"]=sd.south.agg$x[which(sd.south.agg$Group.1 == 0.5)]
-results$sd.interactions[results$group=="South" & results$behav=="Aggression.total"]=sd.south.aggtot$x[which(sd.south.aggtot$Group.1 == 0.5)]
-results$sd.interactions[results$group=="South" & results$behav=="Aggression.physical"]=sd.south.aggp$x[which(sd.south.aggp$Group.1 == 0.5)]
-results$sd.interactions[results$group=="South" & results$behav=="Food Share"]=sd.south.food$x[which(sd.south.food$Group.1 == 0.5)]
-results$sd.interactions[results$group=="South" & results$behav=="Pant Grunt"]=sd.south.pant$x[which(sd.south.pant$Group.1 == 0.5)]
-results$cor.full[results$group=="South" & results$behav=="Grooming"]=mean(comp.south$cor.groom[comp.south$k==1])
-results$cor.full[results$group=="South" & results$behav=="Proximity"]=mean(comp.south$cor.prox[comp.south$k==1])
-results$cor.full[results$group=="South" & results$behav=="Proximity3m"]=mean(comp.south$cor.prox3m[comp.south$k==1])
-results$cor.full[results$group=="South" & results$behav=="Aggression.nonphysical"]=mean(comp.south$cor.agg[comp.south$k==1])
-results$cor.full[results$group=="South" & results$behav=="Aggression.total"]=mean(comp.south$cor.aggtot[comp.south$k==1])
-results$cor.full[results$group=="South" & results$behav=="Aggression.physical"]=mean(comp.south$cor.aggp[comp.south$k==1])
-results$cor.full[results$group=="South" & results$behav=="Food Share"]=mean(comp.south$cor.food[comp.south$k==1])
-results$cor.full[results$group=="South" & results$behav=="Pant Grunt"]=mean(comp.south$cor.pant[comp.south$k==1])
-results$interactions[results$group=="South" & results$behav=="Grooming"]=sum(south.data.set$grooming.interactions.sent, na.rm = T)
-results$interactions[results$group=="South" & results$behav=="Proximity"]=sum(south.data.set$proximity.interactions, na.rm = T)/2
-results$interactions[results$group=="South" & results$behav=="Proximity3m"]=sum(south.data.set$proximity3m.interactions, na.rm = T)/2
-results$interactions[results$group=="South" & results$behav=="Aggression.nonphysical"]=sum(south.data.set$aggression.nonphysical.sent, na.rm = T)
-results$interactions[results$group=="South" & results$behav=="Aggression.total"]=sum(south.data.set$aggression.physical.sent+south.data.set$aggression.nonphysical.sent, na.rm = T)
-results$interactions[results$group=="South" & results$behav=="Aggression.physical"]=sum(south.data.set$aggression.physical.sent, na.rm = T)
-results$interactions[results$group=="South" & results$behav=="Food Share"]=sum(south.data.set$food.share.sent, na.rm = T)
-results$interactions[results$group=="South" & results$behav=="Pant Grunt"]=sum(south.data.set$pant.grunt.sent, na.rm = T)
-
-
-
-
-comp.mang.s=comp.mang
-comp.mang.s[, 2:8]=round(comp.mang[, 2:8], 1)
-comp.mang.s$cor.aggtot=round(comp.mang$cor.aggtot, 1)
-comp.mang.s$cor.supplant=round(comp.mang$cor.supplant, 1)
-xx.mang.groom = aggregate(comp.mang.s$groom.per.dyad, by = list(comp.mang.s$cor.groom), median, na.rm = T)
-xx.mang.aggtot = aggregate(comp.mang.s$aggtot.per.dyad, by = list(comp.mang.s$cor.aggtot), median, na.rm = T)
-xx.mang.aggp = aggregate(comp.mang.s$aggp.per.dyad, by = list(comp.mang.s$cor.aggp), median, na.rm = T)
-xx.mang.agg = aggregate(comp.mang.s$agg.per.dyad, by = list(comp.mang.s$cor.agg), median, na.rm = T)
-xx.mang.prox = aggregate(comp.mang.s$prox.per.dyad, by = list(comp.mang.s$cor.prox), median, na.rm = T)
-xx.mang.prox3m = aggregate(comp.mang.s$prox3m.per.dyad, by = list(comp.mang.s$cor.prox3m), median, na.rm = T)
-xx.mang.pant = aggregate(comp.mang.s$supplant.per.dyad, by = list(comp.mang.s$cor.supplant), median, na.rm = T)
-sd.mang.groom = aggregate(comp.mang.s$groom.per.dyad, by = list(comp.mang.s$cor.groom), sd, na.rm = T)
-sd.mang.aggtot = aggregate(comp.mang.s$aggtot.per.dyad, by = list(comp.mang.s$cor.aggtot), sd, na.rm = T)
-sd.mang.aggp = aggregate(comp.mang.s$aggp.per.dyad, by = list(comp.mang.s$cor.aggp), sd, na.rm = T)
-sd.mang.agg = aggregate(comp.mang.s$agg.per.dyad, by = list(comp.mang.s$cor.agg), sd, na.rm = T)
-sd.mang.prox = aggregate(comp.mang.s$prox.per.dyad, by = list(comp.mang.s$cor.prox), sd, na.rm = T)
-sd.mang.prox3m = aggregate(comp.mang.s$prox3m.per.dyad, by = list(comp.mang.s$cor.prox3m), sd, na.rm = T)
-sd.mang.pant = aggregate(comp.mang.s$supplant.per.dyad, by = list(comp.mang.s$cor.supplant), sd, na.rm = T)
-
-results$median.interactions[results$group=="Mangabey" & results$behav=="Grooming"]=xx.mang.groom$x[which(xx.mang.groom$Group.1 == 0.5)]
-results$median.interactions[results$group=="Mangabey" & results$behav=="Proximity"]=xx.mang.prox$x[which(xx.mang.prox$Group.1 == 0.5)]
-results$median.interactions[results$group=="Mangabey" & results$behav=="Proximity3m"]=xx.mang.prox3m$x[which(xx.mang.prox3m$Group.1 == 0.5)]
-results$median.interactions[results$group=="Mangabey" & results$behav=="Aggression.nonphysical"]=xx.mang.agg$x[which(xx.mang.agg$Group.1 == 0.5)]
-results$median.interactions[results$group=="Mangabey" & results$behav=="Aggression.total"]=xx.mang.aggtot$x[which(xx.mang.aggtot$Group.1 == 0.5)]
-results$median.interactions[results$group=="Mangabey" & results$behav=="Aggression.physical"]=xx.mang.aggp$x[which(xx.mang.aggp$Group.1 == 0.5)]
-results$median.interactions[results$group=="Mangabey" & results$behav=="Supplant"]=xx.mang.pant$x[which(xx.mang.pant$Group.1 == 0.5)]
-results$sd.interactions[results$group=="Mangabey" & results$behav=="Grooming"]=sd.mang.groom$x[which(sd.mang.groom$Group.1 == 0.5)]
-results$sd.interactions[results$group=="Mangabey" & results$behav=="Proximity"]=sd.mang.prox$x[which(sd.mang.prox$Group.1 == 0.5)]
-results$sd.interactions[results$group=="Mangabey" & results$behav=="Proximity3m"]=sd.mang.prox3m$x[which(sd.mang.prox3m$Group.1 == 0.5)]
-results$sd.interactions[results$group=="Mangabey" & results$behav=="Aggression.nonphysical"]=sd.mang.agg$x[which(sd.mang.agg$Group.1 == 0.5)]
-results$sd.interactions[results$group=="Mangabey" & results$behav=="Aggression.total"]=sd.mang.aggtot$x[which(sd.mang.aggtot$Group.1 == 0.5)]
-results$sd.interactions[results$group=="Mangabey" & results$behav=="Aggression.physical"]=sd.mang.aggp$x[which(sd.mang.aggp$Group.1 == 0.5)]
-results$sd.interactions[results$group=="Mangabey" & results$behav=="Supplant"]=sd.mang.pant$x[which(sd.mang.pant$Group.1 == 0.5)]
-results$cor.full[results$group=="Mangabey" & results$behav=="Grooming"]=mean(comp.mang$cor.groom[comp.mang$k==1])
-results$cor.full[results$group=="Mangabey" & results$behav=="Proximity"]=mean(comp.mang$cor.prox[comp.mang$k==1])
-results$cor.full[results$group=="Mangabey" & results$behav=="Proximity3m"]=mean(comp.mang$cor.prox3m[comp.mang$k==1])
-results$cor.full[results$group=="Mangabey" & results$behav=="Aggression.nonphysical"]=mean(comp.mang$cor.agg[comp.mang$k==1])
-results$cor.full[results$group=="Mangabey" & results$behav=="Aggression.total"]=mean(comp.mang$cor.aggtot[comp.mang$k==1])
-results$cor.full[results$group=="Mangabey" & results$behav=="Aggression.physical"]=mean(comp.mang$cor.aggp[comp.mang$k==1])
-results$cor.full[results$group=="Mangabey" & results$behav=="Supplant"]=mean(comp.mang$cor.supplant[comp.mang$k==1])
-results$interactions[results$group=="Mangabey" & results$behav=="Grooming"]=sum(mang.data.set$grooming.interactions.sent, na.rm = T)
-results$interactions[results$group=="Mangabey" & results$behav=="Proximity"]=sum(mang.data.set$proximity.interactions, na.rm = T)/2
-results$interactions[results$group=="Mangabey" & results$behav=="Proximity3m"]=sum(mang.data.set$proximity3m.interactions, na.rm = T)/2
-results$interactions[results$group=="Mangabey" & results$behav=="Aggression.nonphysical"]=sum(mang.data.set$aggression.nonphysical.sent, na.rm = T)
-results$interactions[results$group=="Mangabey" & results$behav=="Aggression.total"]=sum(mang.data.set$aggression.physical.sent+mang.data.set$aggression.nonphysical.sent, na.rm = T)
-results$interactions[results$group=="Mangabey" & results$behav=="Aggression.physical"]=sum(mang.data.set$aggression.physical.sent, na.rm = T)
-results$interactions[results$group=="Mangabey" & results$behav=="Supplant"]=sum(mang.data.set$supplant.sent, na.rm = T)
-
-results$median.interactions=round(results$median.interactions,1)
-results$sd.interactions=round(results$sd.interactions,1)
-results$cor.full=round(results$cor.full,2)
-results$median.interactions[results$cor.full<0.5]=NA
-results$sd.interactions[results$cor.full<0.5]=NA
-
-
-
-
-bb = droplevels(subset(results,!behav %in% c("Aggression.nonphysical", "Aggression.physical", "Food Share")))
-bb$behav[bb$behav=="Supplant"]="Pant Grunt"
-tiff("Y:/primint/Alex/Paper 3/Plots/Consistency.tiff",width = 12, height = 6, units = 'in', res = 300)
-plot.new()
-par(mfrow = c(1, 1), mar = c(4, 4, 4, 4))
-plot(
-  x = as.numeric(as.factor(bb$behav)),
-  y = as.numeric(bb$median.interactions),
-  type = "n",
-  ylab = "Median Interactions per Dyad",
-  xlab = "Interaction Type",
-  xaxt = "n",
-  main = "Consistency",
-  ylim = c(0,20),
-  cex.lab = 1.2,
-  cex.main = 1.5
+## bodycontact
+s.bodycontacteast = standardisation(consistency.frame = east.consistency.bodycontact$consistency)$ind.int
+s.bodycontacteast$group = 'east'
+s.bodycontactsouth = standardisation(consistency.frame = south.consistency.bodycontact$consistency)$ind.int
+s.bodycontactsouth$group = 'south'
+s.bodycontactmang = standardisation(consistency.frame = mang.consistency.bodycontact$consistency)$ind.int
+s.bodycontactmang$group = 'mangabey'
+s.bodycontact = rbind(s.bodycontacteast, s.bodycontactsouth, s.bodycontactmang)
+all.bodycontact  = rbind(
+  cbind(east.consistency.bodycontact$consistency, 
+        group = rep('east', nrow(east.consistency.bodycontact$consistency))),
+  cbind(south.consistency.bodycontact$consistency, 
+        group = rep('south', nrow(south.consistency.bodycontact$consistency))),
+  cbind(mang.consistency.bodycontact$consistency, 
+        group = rep('mangabey', nrow(mang.consistency.bodycontact$consistency)))
 )
-points(
-  as.numeric(as.factor(bb$behav[bb$group == "East"])),
-  y = bb$median.interactions[bb$group == "East"],
-  pch = 4,
-  cex = 2,
-  col = "red"
+
+bodycontact.plot = ggplot(all.bodycontact  %>%
+                         sample_frac(0.2, replace = T),
+                       aes(x = interactions.per.dyad, y = cor.halves, color = group)) +
+  geom_point(alpha = 0.6, size = 1) + ylim(0,1) + xlim(0,30) +
+  geom_hline(aes(yintercept = 0.5), linetype = 2) +
+  geom_line(s.bodycontact, mapping = aes(x = average.interactions.per.dyad, y = average.median, color = as.factor(group)), size = 1.5) +
+  geom_errorbar(s.bodycontact, mapping = aes(x = average.interactions.per.dyad, y = average.median, ymin=average.median-sd, ymax=average.median+sd, color = as.factor(group)), width=.5,
+                position=position_dodge(0.05)) +
+  #facet_grid(cols = vars(group)) +
+  theme_classic()  + labs(y = "Spearman Correlation Coefficient", x = 'Interactions per Dyad') +
+  scale_color_manual(name = 'Group', values = c("red", "blue", "gold")) +
+  ggtitle('Body contact')
+
+
+## proximity
+s.proximityeast = standardisation(consistency.frame = east.consistency.proximity$consistency)$ind.int
+s.proximityeast$group = 'east'
+s.proximitysouth = standardisation(consistency.frame = south.consistency.proximity$consistency)$ind.int
+s.proximitysouth$group = 'south'
+s.proximitymang = standardisation(consistency.frame = mang.consistency.proximity$consistency)$ind.int
+s.proximitymang$group = 'mangabey'
+s.proximity = rbind(s.proximityeast, s.proximitysouth, s.proximitymang)
+all.proximity  = rbind(
+  cbind(east.consistency.proximity$consistency, 
+        group = rep('east', nrow(east.consistency.proximity$consistency))),
+  cbind(south.consistency.proximity$consistency, 
+        group = rep('south', nrow(south.consistency.proximity$consistency))),
+  cbind(mang.consistency.proximity$consistency, 
+        group = rep('mangabey', nrow(mang.consistency.proximity$consistency)))
 )
-points(
-  as.numeric(as.factor(bb$behav[bb$group == "South"])),
-  y = bb$median.interactions[bb$group == "South"],
-  pch = 17,
-  cex = 2,
-  col = "blue"
+
+proximity.plot = ggplot(all.proximity  %>%
+                            sample_frac(0.2, replace = T),
+                          aes(x = interactions.per.dyad, y = cor.halves, color = group)) +
+  geom_point(alpha = 0.6, size = 1) + ylim(0,1) + xlim(0,35) +
+  geom_hline(aes(yintercept = 0.5), linetype = 2) +
+  geom_line(s.proximity, mapping = aes(x = average.interactions.per.dyad, y = average.median, color = as.factor(group)), size = 1.5) +
+  geom_errorbar(s.proximity, mapping = aes(x = average.interactions.per.dyad, y = average.median, ymin=average.median-sd, ymax=average.median+sd, color = as.factor(group)), width=.5,
+                position=position_dodge(0.05)) +
+  #facet_grid(cols = vars(group)) +
+  theme_classic()  + labs(y = "Spearman Correlation Coefficient", x = 'Interactions per Dyad') +
+  scale_color_manual(name = 'Group', values = c("red", "blue", "gold")) +
+  ggtitle('Proximity')
+
+
+## aggression contact
+s.aggression.contacteast = standardisation(consistency.frame = east.consistency.aggression.contact$consistency)$ind.int
+s.aggression.contacteast$group = 'east'
+s.aggression.contactsouth = standardisation(consistency.frame = south.consistency.aggression.contact$consistency)$ind.int
+s.aggression.contactsouth$group = 'south'
+s.aggression.contactmang = standardisation(consistency.frame = mang.consistency.aggression.contact$consistency)$ind.int
+s.aggression.contactmang$group = 'mangabey'
+s.aggression.contact = rbind(s.aggression.contacteast, s.aggression.contactsouth, s.aggression.contactmang)
+all.aggression.contact  = rbind(
+  cbind(east.consistency.aggression.contact$consistency, 
+        group = rep('east', nrow(east.consistency.aggression.contact$consistency))),
+  cbind(south.consistency.aggression.contact$consistency, 
+        group = rep('south', nrow(south.consistency.aggression.contact$consistency))),
+  cbind(mang.consistency.aggression.contact$consistency, 
+        group = rep('mangabey', nrow(mang.consistency.aggression.contact$consistency)))
 )
-points(
-  as.numeric(as.factor(bb$behav[bb$group == "Mangabey"])),
-  y = bb$median.interactions[bb$group == "Mangabey"],
-  pch = 10,
-  cex = 2,
-  col = "green"
+
+aggression.contact.plot = ggplot(all.aggression.contact  %>%
+                          sample_frac(0.2, replace = T),
+                        aes(x = interactions.per.dyad, y = cor.halves, color = group)) +
+  geom_point(alpha = 0.6, size = 1) + ylim(0,1) + xlim(0,3) +
+  geom_hline(aes(yintercept = 0.5), linetype = 2) +
+  geom_line(s.aggression.contact, mapping = aes(x = average.interactions.per.dyad, y = average.median, color = as.factor(group)), size = 1.5) +
+  geom_errorbar(s.aggression.contact, mapping = aes(x = average.interactions.per.dyad, y = average.median, ymin=average.median-sd, ymax=average.median+sd, color = as.factor(group)), width=.5,
+                position=position_dodge(0.05)) +
+  #facet_grid(cols = vars(group)) +
+  theme_classic()  + labs(y = "Spearman Correlation Coefficient", x = 'Interactions per Dyad') +
+  scale_color_manual(name = 'Group', values = c("red", "blue", "gold")) +
+  ggtitle('Aggression Contact')
+
+
+## aggression noncontact
+s.aggression.noncontacteast = standardisation(consistency.frame = east.consistency.aggression.noncontact$consistency)$ind.int
+s.aggression.noncontacteast$group = 'east'
+s.aggression.noncontactsouth = standardisation(consistency.frame = south.consistency.aggression.noncontact$consistency)$ind.int
+s.aggression.noncontactsouth$group = 'south'
+s.aggression.noncontactmang = standardisation(consistency.frame = mang.consistency.aggression.noncontact$consistency)$ind.int
+s.aggression.noncontactmang$group = 'mangabey'
+s.aggression.noncontact = rbind(s.aggression.noncontacteast, s.aggression.noncontactsouth, s.aggression.noncontactmang)
+all.aggression.noncontact  = rbind(
+  cbind(east.consistency.aggression.noncontact$consistency, 
+        group = rep('east', nrow(east.consistency.aggression.noncontact$consistency))),
+  cbind(south.consistency.aggression.noncontact$consistency, 
+        group = rep('south', nrow(south.consistency.aggression.noncontact$consistency))),
+  cbind(mang.consistency.aggression.noncontact$consistency, 
+        group = rep('mangabey', nrow(mang.consistency.aggression.noncontact$consistency)))
 )
-# abline(h = 0.5, lty = 2)
-legend(
-  "topleft",
-  legend = c("Mangabey", "East", "South"),
-  cex = 1.5,
-  col = c("green", "red", "blue"),
-  pch = c(10, 4, 17)
+
+aggression.noncontact.plot = ggplot(all.aggression.noncontact  %>%
+                                   sample_frac(0.2, replace = T),
+                                 aes(x = interactions.per.dyad, y = cor.halves, color = group)) +
+  geom_point(alpha = 0.6, size = 1) + ylim(0,1) + xlim(0,6) +
+  geom_hline(aes(yintercept = 0.5), linetype = 2) +
+  geom_line(s.aggression.noncontact, mapping = aes(x = average.interactions.per.dyad, y = average.median, color = as.factor(group)), size = 1.5) +
+  geom_errorbar(s.aggression.noncontact, mapping = aes(x = average.interactions.per.dyad, y = average.median, ymin=average.median-sd, ymax=average.median+sd, color = as.factor(group)), width=.5,
+                position=position_dodge(0.05)) +
+  #facet_grid(cols = vars(group)) +
+  theme_classic()  + labs(y = "Spearman Correlation Coefficient", x = 'Interactions per Dyad') +
+  scale_color_manual(name = 'Group', values = c("red", "blue", "gold")) +
+  ggtitle('Aggression Noncontact')
+
+
+## pant grunt/supplant
+s.panteast = standardisation(consistency.frame = east.consistency.pant$consistency)$ind.int
+s.panteast$group = 'east'
+s.pantsouth = standardisation(consistency.frame = south.consistency.pant$consistency)$ind.int
+s.pantsouth$group = 'south'
+s.pantmang = standardisation(consistency.frame = mang.consistency.supplant$consistency)$ind.int
+s.pantmang$group = 'mangabey'
+s.pant = rbind(s.panteast, s.pantsouth, s.pantmang)
+all.pant  = rbind(
+  cbind(east.consistency.pant$consistency, 
+        group = rep('east', nrow(east.consistency.pant$consistency))),
+  cbind(south.consistency.pant$consistency, 
+        group = rep('south', nrow(south.consistency.pant$consistency))),
+  cbind(mang.consistency.supplant$consistency, 
+        group = rep('mangabey', nrow(mang.consistency.supplant$consistency)))
 )
-axis(side=1, at=1:5, labels=c("Aggression", "Grooming", "Pant Grunt/Supplant", "Body Contact", "Proximity"), las=1)
+
+pant.plot = ggplot(all.pant  %>%
+                                      sample_frac(0.3, replace = T),
+                                    aes(x = interactions.per.dyad, y = cor.halves, color = group)) +
+  geom_point(alpha = 0.6, size = 1) + ylim(0,1) + xlim(0,6) +
+  geom_hline(aes(yintercept = 0.5), linetype = 2) +
+  geom_line(s.pant, mapping = aes(x = average.interactions.per.dyad, y = average.median, color = as.factor(group)), size = 1.5) +
+  geom_errorbar(s.pant, mapping = aes(x = average.interactions.per.dyad, y = average.median, ymin=average.median-sd, ymax=average.median+sd, color = as.factor(group)), width=.5,
+                position=position_dodge(0.05)) +
+  #facet_grid(cols = vars(group)) +
+  theme_classic()  + labs(y = "Spearman Correlation Coefficient", x = 'Interactions per Dyad') +
+  scale_color_manual(name = 'Group', values = c("red", "blue", "gold")) +
+  ggtitle('Pant Grunt/ Supplant')
+
+
+
+## food share
+s.foodshareeast = standardisation(consistency.frame = east.consistency.foodshare$consistency)$ind.int
+s.foodshareeast$group = 'east'
+s.foodsharesouth = standardisation(consistency.frame = south.consistency.foodshare$consistency)$ind.int
+s.foodsharesouth$group = 'south'
+s.foodshare = rbind(s.foodshareeast, s.foodsharesouth)
+all.foodshare  = rbind(
+  cbind(east.consistency.foodshare$consistency, 
+        group = rep('east', nrow(east.consistency.foodshare$consistency))),
+  cbind(south.consistency.foodshare$consistency, 
+        group = rep('south', nrow(south.consistency.foodshare$consistency)))
+)
+
+foodshare.plot = ggplot(all.foodshare  %>%
+                                      sample_frac(0.2, replace = T),
+                                    aes(x = interactions.per.dyad, y = cor.halves, color = group)) +
+  geom_point(alpha = 0.6, size = 1) + ylim(0,1) + xlim(0,3) +
+  geom_hline(aes(yintercept = 0.5), linetype = 2) +
+  geom_line(s.foodshare, mapping = aes(x = average.interactions.per.dyad, y = average.median, color = as.factor(group), shape = group), size = 1.5) +
+  geom_errorbar(s.foodshare, mapping = aes(x = average.interactions.per.dyad, y = average.median, ymin=average.median-sd, ymax=average.median+sd, color = as.factor(group)), width=.5,
+                position=position_dodge(0.05)) +
+  #facet_grid(cols = vars(group)) +
+  theme_classic()  + labs(y = "Spearman Correlation Coefficient", x = 'Interactions per Dyad') +
+  scale_color_manual(name = 'Group', values = c("red", "blue", "gold")) +
+  ggtitle('Food Share')
+
+
+
+
+#### standardised
+all.stand = rbind(
+  cbind(south.stand, group = 'south'),
+  cbind(east.stand, group = 'east'),
+  cbind(mang.stand, group = 'mangabey')
+)
+
+all.stand = all.stand[all.stand$behaviour!='food share' & all.stand$behaviour!='contact aggression' & all.stand$behaviour!='aggression',]
+all.stand$behaviour[all.stand$behaviour%in%c('supplant', 'pant grunt')] = 'pant grunt/supplant'
+
+stand.plot = ggplot(all.stand, aes(x = behaviour, y = interaction.per.dyad, color = group, fill = group, shape = group)) +
+  geom_point(size = 3) +
+  theme_bw() +
+  labs(y = "Interactions per Dyad", x = 'Interaction Type') +
+  ggtitle('Summary Standardised Consistency') + 
+  scale_color_manual(name = 'Group', values = c("red", "blue", "gold"))
+
+library(gridExtra)
+
+
+tiff("Fig Grooming Food.tiff", width = 8, height = 10, units = 'in', res = 300)
+grid.arrange(grooming.plot, foodshare.plot)
 dev.off()
 
+tiff("Fig Bodycontact Proximity.tiff", width = 8, height = 10, units = 'in', res = 300)
+grid.arrange(bodycontact.plot, proximity.plot)
+dev.off()
+
+tiff("Fig Aggression.tiff", width = 8, height = 10, units = 'in', res = 300)
+grid.arrange(aggression.noncontact.plot, aggression.contact.plot)
+dev.off()
+
+tiff("Fig Pant Supplant.tiff", width = 8, height = 6, units = 'in', res = 300)
+pant.plot
+dev.off()
+
+tiff("Fig Summary.tiff", width = 8, height = 6, units = 'in', res = 300)
+stand.plot
+dev.off()
+
+all.results = rbind(all.south, all.east, all.mang)
+
+aggregate(all.results$cor.halves[all.results$subset.size == 1],
+            by = list(all.results$behaviour[all.results$subset.size == 1], 
+                      all.results$group[all.results$subset.size == 1]),
+            median)

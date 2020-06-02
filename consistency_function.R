@@ -45,11 +45,11 @@ comparison <- function(dyad, beh.h, date, k, behaviour, inds, interactions, undi
 
 standardisation <- function(consistency.frame){
   xx.frame = consistency.frame
-  xx.frame$interactions.per.dyad = round((xx.frame$interactions * 5 / ((as.numeric(xx.frame$individuals)^2 - as.numeric(xx.frame$individuals))/2)), 0)
+  xx.frame$interactions.per.dyad = round((xx.frame$interactions * 2 / ((as.numeric(xx.frame$individuals)^2 - as.numeric(xx.frame$individuals))/2)), 0)
   xx.frame$count = 1
   ind.int = aggregate(xx.frame$cor.halves, by = list(xx.frame$interactions.per.dyad), median, na.rm = T)
   colnames(ind.int) = c('average.interactions.per.dyad', 'average.median')
-  ind.int$average.interactions.per.dyad = ind.int$average.interactions.per.dyad/5
+  ind.int$average.interactions.per.dyad = ind.int$average.interactions.per.dyad/2
   ind.int$sd = aggregate(xx.frame$cor.halves, by = list(xx.frame$interactions.per.dyad), sd, na.rm = T)$x
   ind.int$count = aggregate(xx.frame$count, by = list(xx.frame$interactions.per.dyad), sum, na.rm = T)$x
   results = data.frame(interaction.per.dyad = NA, median.correlation = NA, sd = NA)
@@ -80,7 +80,7 @@ consistency <- function(individual1, individual2, date, interactions, undirectio
   inds = length(unique(c(individual1, individual2)))
   comparison = cmpfun(comparison)
   
-  consistency.frame = lapply(seq(1,0.05, by=-k.seq), function(k){ # select increasingly smaller subsets of the data to calculate consistency
+  consistency.frame = lapply(seq(1,0.02, by=-k.seq), function(k){ # select increasingly smaller subsets of the data to calculate consistency
     comparison.frame = do.call(rbind, lapply(1:j, function(x) comparison(dyad = dyad, beh.h = beh.h, date = date, k = k, behaviour = behaviour, inds = inds, interactions = interactions, undirectional = undirectional, average.duration = average.duration)))
     return(comparison.frame)
   })

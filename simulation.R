@@ -1,6 +1,13 @@
 ######### this code creates simulated data for n number of individuals, interacting 1-4 times a day, with three different certainties of choice (strong preference for some individuals, medium preference for some individuals, egalitarian distribution)
 ### at the end, for each individual, there should be interactions every day that they are the focal
 
+source('consistency_function.R')
+library(compiler)
+library(parallel)
+library(doParallel)
+consistency = cmpfun(consistency)
+
+
 nr.ids = c(10, 10, 10, 18, 18, 18, 26, 26, 26)
 
 sim.data = lapply(nr.ids, function(k) {
@@ -11,7 +18,7 @@ sim.data = lapply(nr.ids, function(k) {
 
   data.set = lapply(1:nrow(date.set), function(x) {
     xx = date.set[x, ]
-    xx = xx[rep(seq_len(nrow(xx)), each = sample(1:k, 1)), ]
+    xx = xx[rep(seq_len(nrow(xx)), each = sample(1:15, 1)), ]
     xx$gr.bout.index = x + (1:nrow(xx)) - 1
     xx = xx[rep(seq_len(nrow(xx)), each = length(subj.to.keep)), ]
     xx$pot.partner = as.character(subj.to.keep)
@@ -73,8 +80,8 @@ sim.data = lapply(nr.ids, function(k) {
   for(i in 1:length(unique(focal))){
     xx = gr.llh[focal == unique(focal)[i]]
     xx2 = xx ^ 2
-    llh.medium[focal == unique(focal)[i]] = (xx-min(xx))/(max(xx)-min(xx)) * (0.9 - 0.1) + 0.1
-    llh.low[focal == unique(focal)[i]] = (xx-min(xx))/(max(xx)-min(xx)) * (0.75 - 0.25) + 0.25
+    llh.medium[focal == unique(focal)[i]] = (xx2-min(xx2))/(max(xx2)-min(xx2)) * (0.9 - 0.1) + 0.1
+    llh.low[focal == unique(focal)[i]] = (xx-min(xx))/(max(xx)-min(xx)) * (0.9 - 0.1) + 0.1
     llh.high[focal == unique(focal)[i]] = ((xx2-min(xx2))/(max(xx2)-min(xx2)))
   }
 
@@ -154,8 +161,23 @@ sim.data = lapply(nr.ids, function(k) {
 
 names(sim.data) = nr.ids
 
+
 sim.results = lapply(sim.data, function(n){
-  part.results = lapply(1:length(n), function(m){
+  mycluster <- makeCluster(7, type = "PSOCK")
+  # export the relevant information to each core
+  clusterExport(cl = mycluster,
+                c("sim.data",
+                  "n",
+                  "consistency",
+                  'nr.ids',
+                  'cmpfun',
+                  'comparison',
+                  'standardisation'),
+                envir = environment())
+  registerDoParallel(mycluster)
+  
+  part.results = parLapply(cl = mycluster, X = 1:length(n), function(m){
+    library(ggplot2)
     dsi.data = n[[m]]
     dsi.data$Duration = 1
     for (i in 1:nrow(dsi.data)) {
@@ -212,7 +234,7 @@ sim.results = lapply(sim.data, function(n){
     names(observation.data) = c(1, 0.66, 0.33)
 
     consistency.frame = lapply(1:length(observation.data), function(x){
-      xx = consistency(individual1 = observation.data[[x]]$individual1, individual2 = observation.data[[x]]$individual2, date = observation.data[[x]]$date, interactions = observation.data[[x]]$grooming.sent, observation.time = observation.data[[x]]$observation.time, k.seq = 0.02, j = 20, plot.col = 'black', behaviour = paste(c(names(n)[[m]], names(observation.data)[x]), collapse = ' '))
+      xx = consistency(individual1 = observation.data[[x]]$individual1, individual2 = observation.data[[x]]$individual2, date = observation.data[[x]]$date, interactions = observation.data[[x]]$grooming.sent, observation.time = observation.data[[x]]$observation.time, k.seq = 0.02, j = 20, plot.col = 'black', behaviour = paste(c(names(n)[[m]], names(observation.data)[x]), collapse = ' '), average.duration = sum(observation.data[[x]]$grooming.sent)/sum(observation.data[[x]]$grooming.interactions.sent))
       xx.cons = xx$consistency
       xx.cons$observation.time = as.numeric(names(observation.data)[x])
       return(list(consist = xx.cons, plot = xx$plot))
@@ -226,6 +248,7 @@ sim.results = lapply(sim.data, function(n){
     consistency.frame$certainty = unlist(strsplit(names(n)[[m]], split = '.', fixed = T))[1]
     return(list(consistency.frame = consistency.frame, plot = consistency.plot))
   })
+  stopCluster(mycluster)
   part.plot = lapply(part.results, function(x) x$plot)
   part.results = lapply(part.results, function(x) x$consistency.frame)
   part.results = do.call(rbind, part.results)
@@ -236,8 +259,7 @@ sim.plot = lapply(sim.results, function(x) x$plot)
 sim.results = lapply(sim.results, function(x) x$part.results)
 all.results = lapply(1:length(sim.results), function(x){
   xx = sim.results[[x]]
-  xx$individuals = names(sim.results)[x]
-  xx$dyads = (as.numeric(names(sim.results)[x])^2 - as.numeric(names(sim.results)[x]))/2
+  xx$dyads = (as.numeric(xx$individuals)^2 - as.numeric(xx$individuals))/2
   return(xx)
 })
 
@@ -261,16 +283,17 @@ standardisation.individuals20$individuals = 26
 standardisation.individuals = rbind(standardisation.individuals10, standardisation.individuals15, standardisation.individuals20)
 
 individual.impact = ggplot(filter(all.results, inverted == 0 & certainty == 'high' & observation.time == 1) %>%
-                             sample_frac(0.3, replace = T),
-                           aes(x = interactions.dyad, y = cor.halves, color = individuals)) +
+                             sample_frac(0.1, replace = T),
+                           aes(x = interactions.dyad, y = cor.halves, color = as.factor(individuals))) +
   geom_point(alpha = 0.6, size = 2) + ylim(0,1) + xlim(0,20) +
   geom_hline(aes(yintercept = 0.5), linetype = 2) +
   geom_line(standardisation.individuals, mapping = aes(x = average.interactions.per.dyad, y = average.median, color = as.factor(individuals)), size = 1.5) +
   geom_errorbar(standardisation.individuals, mapping = aes(x = average.interactions.per.dyad, y = average.median, ymin=average.median-sd, ymax=average.median+sd, color = as.factor(individuals)), width=.5,
                 position=position_dodge(0.05)) +
   # facet_grid(cols = vars(individuals)) +
-  theme_classic()  + labs(y = "Correlation Halves", x = 'Interactions per Dyad') +
-  scale_color_discrete(name = 'Number of Individuals')
+  theme_classic()  + labs(y = "Spearman Correlation Coefficient", x = 'Interactions per Dyad') +
+  scale_color_manual(name = 'Number of Individuals', values = c("red", "blue", "gold")) +
+  ggtitle('1 Simulation Number Individuals')
 
 
 #### impact of collection density
@@ -283,36 +306,43 @@ standardisation.collection0.33 = standardisation(consistency.frame = data.frame(
 standardisation.collection0.33$observation.time = 0.33
 standardisation.collection = rbind(standardisation.collection0.33, standardisation.collection0.66, standardisation.collection1)
 
-collection.impact = ggplot(filter(all.results, inverted == 0 & certainty == 'high' & individuals == 18) %>% sample_frac(0.2, replace = T), aes(x = interactions.dyad, y = cor.halves, color = as.factor(observation.time))) +
-  geom_point(alpha = 0.6, size = 2) + ylim(0,1) +
+collection.impact = ggplot(filter(all.results, inverted == 0 & certainty == 'high' & individuals == 18) %>% sample_frac(0.1, replace = T), aes(x = interactions.dyad, y = cor.halves, color = as.factor(observation.time))) +
+  geom_point(alpha = 0.6, size = 2) + ylim(0,1) + xlim(0,20) +
   geom_hline(aes(yintercept = 0.5), linetype = 2) +
   geom_line(standardisation.collection, mapping = aes(x = average.interactions.per.dyad, y = average.median, color = as.factor(observation.time)), size = 1.5) +
   geom_errorbar(standardisation.collection, mapping = aes(x = average.interactions.per.dyad, y = average.median, ymin=average.median-sd, ymax=average.median+sd, color = as.factor(observation.time)), width=.5,
                 position=position_dodge(0.05)) +
-  theme_classic()  + labs(y = "Correlation Halves", x = 'Interactions per Dyad') +
-  scale_color_discrete(name = 'Observation Time')
+  theme_classic()  + labs(y = "Spearman Correlation Coefficient", x = 'Interactions per Dyad') +
+  scale_color_manual(name = 'Observation Time', values = c("red", "blue", "gold"), labels = c("1/3 Days", "2/3 Days", "All Days")) +
+  ggtitle('2 Simulation Collection Effort')
 
 
 #### impact of certainty
+all.results$certainty.a = all.results$certainty
+all.results$certainty.a[all.results$certainty=='high'] = '1'
+all.results$certainty.a[all.results$certainty=='low'] = '3'
+all.results$certainty.a[all.results$certainty=='med'] = '2'
+all.results$certainty.a = as.factor(as.character(all.results$certainty.a))
 
 standardisation.certaintyhigh = standardisation(consistency.frame = data.frame(filter(all.results, inverted == 0 & certainty == 'high' & individuals == 18 & observation.time == 1)))$ind.int
-standardisation.certaintyhigh$certainty = 'high'
+standardisation.certaintyhigh$certainty.a = '1'
 standardisation.certaintymedium = standardisation(consistency.frame = data.frame(filter(all.results, inverted == 0 & certainty == 'med' & individuals == 18 & observation.time == 1)))$ind.int
-standardisation.certaintymedium$certainty = 'med'
+standardisation.certaintymedium$certainty.a = '2'
 standardisation.certaintylow = standardisation(consistency.frame = data.frame(filter(all.results, inverted == 0 & certainty == 'low' & individuals == 18 & observation.time == 1)))$ind.int
-standardisation.certaintylow$certainty = 'low'
+standardisation.certaintylow$certainty.a = '3'
 standardisation.certainty = rbind(standardisation.certaintylow, standardisation.certaintymedium, standardisation.certaintyhigh)
 
-certainty.impact = ggplot(filter(all.results, inverted == 0 & observation.time == 1 & individuals == 18 & certainty != 'random') %>% sample_frac(0.2, replace = T), aes(x = interactions.dyad, y = cor.halves, color = as.factor(certainty))) +
-  geom_point(alpha = 0.6, size = 2) + ylim(-0.1,1) +
-  geom_line(standardisation.certainty, mapping = aes(x = average.interactions.per.dyad, y = average.median, color = as.factor(certainty)), size = 1.5) +
-  geom_errorbar(standardisation.certainty, mapping = aes(x = average.interactions.per.dyad, y = average.median, ymin=average.median-sd, ymax=average.median+sd, color = as.factor(certainty)), width=.5,
+certainty.impact = ggplot(filter(all.results, inverted == 0 & observation.time == 1 & individuals == 18 & certainty != 'random') %>% sample_frac(0.1, replace = T), aes(x = interactions.dyad, y = cor.halves, color = as.factor(certainty.a))) +
+  geom_point(alpha = 0.6, size = 2) + ylim(-0.1,1) + xlim(0,25) + 
+  geom_line(standardisation.certainty, mapping = aes(x = average.interactions.per.dyad, y = average.median, color = as.factor(certainty.a)), size = 1.5) +
+  geom_errorbar(standardisation.certainty, mapping = aes(x = average.interactions.per.dyad, y = average.median, ymin=average.median-sd, ymax=average.median+sd, color = as.factor(certainty.a)), width=.5,
                 position=position_dodge(0.05)) +
   geom_hline(aes(yintercept = 0.5), linetype = 2) +
   geom_hline(aes(yintercept = 0), linetype = 1) +
   # facet_grid(cols = vars(certainty)) +
-  theme_classic()  + labs(y = "Correlation Halves", x = 'Interactions per Dyad') +
-  scale_color_discrete(name = 'Certainty')
+  theme_classic()  + labs(y = "Spearman Correlation Coefficient", x = 'Interactions per Dyad')  +
+  scale_color_manual(name = 'Certainty of Partner Choice', values = c("red", "blue", "gold"), labels = c("High", "Medium", "Low")) +
+  ggtitle('Simulation Certainty Partner Choice')
 
 
 
@@ -335,7 +365,7 @@ standardisation.condition = rbind(standardisation.conditionrandom, standardisati
 
 condition.impact = ggplot(filter(all.results, observation.time == 1 &
                                    individuals == 10 &
-                                   certainty %in% c('high', 'random') & condition != 'None') %>% sample_frac(0.2, replace = T),
+                                   certainty %in% c('high', 'random') & condition != 'None') %>% sample_frac(0.1, replace = T),
                           aes(x = interactions.dyad, y = cor.halves, color = as.factor(condition))) +
   geom_point(alpha = 0.4, size = 2) + ylim(-0.3,1) +
   geom_line(standardisation.condition, mapping = aes(x = average.interactions.per.dyad, y = average.median, color = as.factor(condition)), size = 1.5) +
@@ -343,19 +373,20 @@ condition.impact = ggplot(filter(all.results, observation.time == 1 &
                 position=position_dodge(0.05)) +
   geom_hline(aes(yintercept = 0.5), linetype = 2) +
   geom_hline(aes(yintercept = 0), linetype = 1) +
-  theme_minimal()  + labs(y = "Correlation Halves", x = 'Interactions per Dyad') +
+  theme_minimal()  + labs(y = "Spearman Correlation Coefficient", x = 'Interactions per Dyad') +
   # facet_grid(cols = vars(condition)) +
-  scale_color_discrete(name = 'Condition')
+  scale_color_manual(name = 'Condition', values = c("red", "blue", "gold")) +
+  ggtitle('Simulation Condition')
 
 
 library(gridExtra)
 
-tiff("/Users/Alex1/Documents/GitHub/Consistency Paper/Fig 1.tiff", width = 6, height = 8, units = 'in', res = 300)
+tiff("Fig 3.tiff", width = 8, height = 10, units = 'in', res = 300)
 grid.arrange(individual.impact, collection.impact)
 dev.off()
-tiff("/Users/Alex1/Documents/GitHub/Consistency Paper/Fig 2.tiff", width = 6, height = 8, units = 'in', res = 300)
+tiff("Fig 4.tiff", width = 8, height = 6, units = 'in', res = 300)
 certainty.impact
 dev.off()
-tiff("/Users/Alex1/Documents/GitHub/Consistency Paper/Fig 3.tiff", width = 6, height = 8, units = 'in', res = 300)
+tiff("Fig 5.tiff", width = 8, height = 6, units = 'in', res = 300)
 condition.impact
 dev.off()
