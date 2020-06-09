@@ -234,7 +234,7 @@ sim.results = lapply(sim.data, function(n){
     names(observation.data) = c(1, 0.66, 0.33)
 
     consistency.frame = lapply(1:length(observation.data), function(x){
-      xx = consistency(individual1 = observation.data[[x]]$individual1, individual2 = observation.data[[x]]$individual2, date = observation.data[[x]]$date, interactions = observation.data[[x]]$grooming.sent, observation.time = observation.data[[x]]$observation.time, k.seq = 0.02, j = 20, plot.col = 'black', behaviour = paste(c(names(n)[[m]], names(observation.data)[x]), collapse = ' '), average.duration = sum(observation.data[[x]]$grooming.sent)/sum(observation.data[[x]]$grooming.interactions.sent))
+      xx = consistency(individual1 = observation.data[[x]]$individual1, individual2 = observation.data[[x]]$individual2, date = observation.data[[x]]$date, interactions = observation.data[[x]]$grooming.sent, observation.time = observation.data[[x]]$observation.time, k.seq = 0.02, j = 100, plot.col = 'black', behaviour = paste(c(names(n)[[m]], names(observation.data)[x]), collapse = ' '), average.duration = sum(observation.data[[x]]$grooming.sent)/sum(observation.data[[x]]$grooming.interactions.sent))
       xx.cons = xx$consistency
       xx.cons$observation.time = as.numeric(names(observation.data)[x])
       return(list(consist = xx.cons, plot = xx$plot))
@@ -307,7 +307,7 @@ standardisation.collection0.33$observation.time = 0.33
 standardisation.collection = rbind(standardisation.collection0.33, standardisation.collection0.66, standardisation.collection1)
 
 collection.impact = ggplot(filter(all.results, inverted == 0 & certainty == 'high' & individuals == 18) %>% sample_frac(0.1, replace = T), aes(x = interactions.dyad, y = cor.halves, color = as.factor(observation.time))) +
-  geom_point(alpha = 0.6, size = 2) + ylim(0,1) + xlim(0,20) +
+  geom_point(alpha = 0.6, size = 2) + ylim(0,1) + xlim(0,30) +
   geom_hline(aes(yintercept = 0.5), linetype = 2) +
   geom_line(standardisation.collection, mapping = aes(x = average.interactions.per.dyad, y = average.median, color = as.factor(observation.time)), size = 1.5) +
   geom_errorbar(standardisation.collection, mapping = aes(x = average.interactions.per.dyad, y = average.median, ymin=average.median-sd, ymax=average.median+sd, color = as.factor(observation.time)), width=.5,
@@ -333,7 +333,7 @@ standardisation.certaintylow$certainty.a = '3'
 standardisation.certainty = rbind(standardisation.certaintylow, standardisation.certaintymedium, standardisation.certaintyhigh)
 
 certainty.impact = ggplot(filter(all.results, inverted == 0 & observation.time == 1 & individuals == 18 & certainty != 'random') %>% sample_frac(0.1, replace = T), aes(x = interactions.dyad, y = cor.halves, color = as.factor(certainty.a))) +
-  geom_point(alpha = 0.6, size = 2) + ylim(-0.1,1) + xlim(0,25) + 
+  geom_point(alpha = 0.6, size = 2) + ylim(-0.1,1) + xlim(0,30) + 
   geom_line(standardisation.certainty, mapping = aes(x = average.interactions.per.dyad, y = average.median, color = as.factor(certainty.a)), size = 1.5) +
   geom_errorbar(standardisation.certainty, mapping = aes(x = average.interactions.per.dyad, y = average.median, ymin=average.median-sd, ymax=average.median+sd, color = as.factor(certainty.a)), width=.5,
                 position=position_dodge(0.05)) +
