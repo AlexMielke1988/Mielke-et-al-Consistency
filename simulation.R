@@ -1,4 +1,4 @@
-######### this code creates simulated data for n number of individuals, interacting 1-4 times a day, with three different certainties of choice (strong preference for some individuals, medium preference for some individuals, egalitarian distribution)
+######### this code creates simulated data for n number of individuals, interacting 1-10 times a day, with three different certainties of choice (strong preference for some individuals, medium preference for some individuals, egalitarian distribution)
 ### at the end, for each individual, there should be interactions every day that they are the focal
 
 source('consistency_function.R')
@@ -7,15 +7,22 @@ library(parallel)
 library(doParallel)
 consistency = cmpfun(consistency)
 
-
+#nr of individuals in sample
 nr.ids = c(10, 10, 10, 15, 15, 15, 20, 20, 20)
 
+##### create behavioural datasets for one year for all individuals in the community
 sim.data = lapply(nr.ids, function(k) {
-  subj.to.keep = as.character(1:k)
+  # create individuals
+  subj.to.keep = as.character(1:k) 
+  
+  # create time frame
   dates = seq(as.Date("2014-11-01"), as.Date("2015-10-31"), "days")
+  
+  #create combination
   date.set = data.frame(expand.grid(subj.to.keep, dates))
   colnames(date.set) = c('focal', 'date')
 
+  # for each day and individual, create between 1 and 10 interactions
   data.set = lapply(1:nrow(date.set), function(x) {
     xx = date.set[x, ]
     xx = xx[rep(seq_len(nrow(xx)), each = sample(1:10, 1)), ]
@@ -30,7 +37,7 @@ sim.data = lapply(nr.ids, function(k) {
 
   data.set = do.call(rbind, data.set)
 
-  #### set association likelihood
+  #### create dyads
   foc = as.character(expand.grid(subj.to.keep, subj.to.keep)[, 1])
   dyads = data.frame(
     focal = foc,
@@ -39,15 +46,18 @@ sim.data = lapply(nr.ids, function(k) {
     ))
   )
 
+  # for each interaction, randomly select only subset of 'possible' partners
   remove = unlist(lapply(1:nrow(data.set), function(i) {
     return(sample(c(0, 1), size = 1, prob = c(0.3, 0.7)))
   }))
   data.set = subset(data.set, remove == 1)
   data.set = data.set[data.set$focal!= data.set$pot.partner,]
 
+  # remove interactions where individual is alone
   eff.gr.size = table(data.set$gr.bout.index)
   eff.gr.size = names(eff.gr.size)[eff.gr.size > 1]
 
+  # create dyads as term in data
   data.set = subset(data.set, gr.bout.index%in%eff.gr.size)
   data.set$dyad = apply(cbind(
     as.character(data.set$focal),
@@ -56,7 +66,7 @@ sim.data = lapply(nr.ids, function(k) {
     paste(sort(x), collapse = "_")
   })
 
-  ### set grooming likelihood
+  ### set grooming likelihood per dyad
   dyads$gr.llh = 0
   dyads = dyads[dyads$focal!=dyads$partner,]
   dyads$dyad = apply(cbind(as.character(dyads$focal), as.character(dyads$partner)), 1, function(x) {
@@ -70,6 +80,7 @@ sim.data = lapply(nr.ids, function(k) {
   ) ^ 2)
   dyads$gr.llh[dyads$gr.llh > 1] = 1
 
+  #vectorise
   focal = data.set$focal
   gr.bout.index = data.set$gr.bout.index
   gr.llh = dyads$gr.llh[match(data.set$dyad, dyads$dyad)]
@@ -77,6 +88,7 @@ sim.data = lapply(nr.ids, function(k) {
   llh.medium = data.set$gr.llh
   llh.low = data.set$gr.llh
 
+  # create likelihoods of interaction under different conditions: 'high' is squared, 'medium' is squared but restricted to 0.05 - 0.95, low is normal and restricted to 0.1 - 0.9
   for(i in 1:length(unique(focal))){
     xx = gr.llh[focal == unique(focal)[i]]
     xx2 = xx ^ 2
@@ -86,6 +98,7 @@ sim.data = lapply(nr.ids, function(k) {
   }
 
 
+  # remove 0 and 1
   llh.high[llh.high == 1] = 0.9999
   llh.medium[llh.medium == 1] = 0.9999
   llh.low[llh.low == 1] = 0.001
@@ -93,6 +106,7 @@ sim.data = lapply(nr.ids, function(k) {
   llh.medium[llh.medium == 0] = 0.001
   llh.low[llh.low == 0] = 0.001
 
+  # create vectors for chosen as partner 1/0
   gr.initiated.low = rep(0, length(llh.low))
   gr.initiated.medium = rep(0, length(llh.low))
   gr.initiated.high = rep(0, length(llh.low))
@@ -106,6 +120,7 @@ sim.data = lapply(nr.ids, function(k) {
   gr.bout.index = gr.bout.index[!gr.bout.index%in%xx]
   data.set = data.set[!data.set$gr.bout.index%in%xx,]
 
+  # for each bout, under each condition, select who was chosen
   for (i in unique(gr.bout.index)) {
     xx = which(gr.bout.index == i)
     nrlow = sample(xx, size = 1, prob = (llh.low[xx]))
@@ -132,6 +147,7 @@ sim.data = lapply(nr.ids, function(k) {
     gr.initiated.randomin[nrrandomin] = 1
   }
 
+  # put likelihoods into data.set
   data.set$gr.initiated.high = gr.initiated.high
   data.set$gr.initiated.medium = gr.initiated.medium
   data.set$gr.initiated.low = gr.initiated.low
@@ -161,8 +177,10 @@ sim.data = lapply(nr.ids, function(k) {
 
 names(sim.data) = nr.ids
 
+# now create simulations for each simulated dataset: select one focal per day, choose whether all days are included or just 2/3 or 1/3, and do consistency test
 
 sim.results = lapply(sim.data, function(n){
+  # parallelize
   mycluster <- makeCluster(11, type = "PSOCK")
   # export the relevant information to each core
   clusterExport(cl = mycluster,
@@ -178,7 +196,10 @@ sim.results = lapply(sim.data, function(n){
   
   part.results = parLapply(cl = mycluster, X = 1:length(n), function(m){
     library(ggplot2)
+    # select dataset
     dsi.data = n[[m]]
+    
+    #create durations for chosen individuals (randomly)
     dsi.data$Duration = 1
     for (i in 1:nrow(dsi.data)) {
       xx = rnorm(1000, mean = 60, sd = 50)
@@ -188,6 +209,7 @@ sim.results = lapply(sim.data, function(n){
     dsi.data$Sender = dsi.data$focal
     dsi.data$Receiver = dsi.data$pot.partner
 
+    # get only one focal per day, only include 
     rand.dsi.data=dsi.data
     rand.dsi.data$chosen = 1
     rand.dsi.data=rand.dsi.data[complete.cases(rand.dsi.data),]
@@ -198,6 +220,7 @@ sim.results = lapply(sim.data, function(n){
     }))
     rand.dsi.data=subset(rand.dsi.data, Sender == day.focal | Receiver == day.focal)
 
+    # create for all focals all possible interaction partners per day and how many interactions they had
     subj.to.keep = unique(c(rand.dsi.data$Receiver, rand.dsi.data$Sender))
     dates = unique(rand.dsi.data$date)
     foc=sort(rep(subj.to.keep, times=length(subj.to.keep)))
@@ -208,6 +231,7 @@ sim.results = lapply(sim.data, function(n){
     data.set=subset(data.set, individual1!=individual2)
     data.set$dyad=apply(cbind(as.character(data.set$individual1), as.character(data.set$individual2)), 1, function(x){paste(sort(x), collapse="_")})
 
+    # collate interactions
     for(i in 1:nrow(rand.dsi.data)){
       nr=which(data.set$individual1==rand.dsi.data$Sender[i] & data.set$individual2==rand.dsi.data$Receiver[i] & data.set$date==rand.dsi.data$date[i])
       nr2=which(data.set$individual2==rand.dsi.data$Sender[i] & data.set$individual1==rand.dsi.data$Receiver[i] & data.set$date==rand.dsi.data$date[i])
@@ -215,6 +239,7 @@ sim.results = lapply(sim.data, function(n){
       data.set$grooming.interactions.sent[nr]=data.set$grooming.interactions.sent[nr]+1
     }
 
+    # create observation times of 12h per focal day
     data.set$individual1=as.character(data.set$individual1)
     data.set$individual2=as.character(data.set$individual2)
 
@@ -224,6 +249,7 @@ sim.results = lapply(sim.data, function(n){
       data.set$observation.time[(data.set$individual1==ind1|data.set$individual2==ind1) & data.set$date%in%ind.dates]=data.set$observation.time[(data.set$individual1==ind1|data.set$individual2==ind1) & data.set$date%in%ind.dates]+12
     }
 
+    # randomly select full dataset, 2/3 or 1/3 of data days
     observation.effort = c(1, 0.66, 0.33)
     observation.data = lapply(observation.effort, function(y){
       yy=sample(unique(data.set$date), size = length(unique(data.set$date)) * y)
@@ -233,12 +259,15 @@ sim.results = lapply(sim.data, function(n){
 
     names(observation.data) = c(1, 0.66, 0.33)
 
+    # for all datasets, create consistency measure
     consistency.frame = lapply(1:length(observation.data), function(x){
       xx = consistency(individual1 = observation.data[[x]]$individual1, individual2 = observation.data[[x]]$individual2, date = observation.data[[x]]$date, interactions = observation.data[[x]]$grooming.sent, observation.time = observation.data[[x]]$observation.time, k.seq = 0.02, j = 100, plot.col = 'black', behaviour = paste(c(names(n)[[m]], names(observation.data)[x]), collapse = ' '), average.duration = sum(observation.data[[x]]$grooming.sent)/sum(observation.data[[x]]$grooming.interactions.sent))
       xx.cons = xx$consistency
       xx.cons$observation.time = as.numeric(names(observation.data)[x])
       return(list(consist = xx.cons, plot = xx$plot))
     })
+    
+    #store data
     consistency.plot = lapply(consistency.frame, function(x) x$plot)
     consistency.frame = lapply(consistency.frame, function(x) x$consist)
     consistency.frame = do.call(rbind, consistency.frame)
@@ -256,6 +285,8 @@ sim.results = lapply(sim.data, function(n){
 })
 
 sim.plot = lapply(sim.results, function(x) x$plot)
+
+# collate all results
 sim.results = lapply(sim.results, function(x) x$part.results)
 all.results = lapply(1:length(sim.results), function(x){
   xx = sim.results[[x]]

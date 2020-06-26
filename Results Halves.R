@@ -1,9 +1,12 @@
-load("Paper 3 Prepared Data.RData")
+load("prepared_data.RData")
 source('consistency_function.R')
 library(compiler)
+library(tidyverse)
+library(ggplot2)
+library(gridExtra)
 consistency = cmpfun(consistency)
 
-
+#### create consistencies: East group
 east.consistency.grooming = consistency(individual1 = east.data.set$individual1, individual2 = east.data.set$individual2, date = east.data.set$date, interactions = east.data.set$grooming.sent, observation.time = east.data.set$obs.time.with.ass, k.seq = 0.01, j = 100, plot.col = 'green', behaviour = 'grooming', average.duration = sum(east.data.set$grooming.sent)/sum(east.data.set$grooming.interactions.sent))
 east.consistency.aggression.contact = consistency(individual1 = east.data.set$individual1, individual2 = east.data.set$individual2, date = east.data.set$date, interactions = east.data.set$aggression.physical.sent, observation.time = east.data.set$obs.time.with.ass, k.seq = 0.01, j = 100, plot.col = 'green',behaviour = 'contact aggression')
 east.consistency.aggression.noncontact = consistency(individual1 = east.data.set$individual1, individual2 = east.data.set$individual2, date = east.data.set$date, interactions = east.data.set$aggression.nonphysical.sent, observation.time = east.data.set$obs.time.with.ass, k.seq = 0.01, j = 100, plot.col = 'green',behaviour = 'noncontact aggression')
@@ -13,26 +16,26 @@ east.consistency.bodycontact = consistency(individual1 = east.data.set$individua
 east.consistency.foodshare = consistency(individual1 = east.data.set$individual1, individual2 = east.data.set$individual2, date = east.data.set$date, interactions = east.data.set$food.share.sent, observation.time = east.data.set$obs.time.without.ass, k.seq = 0.01, j = 100, plot.col = 'green',behaviour = 'food sharing')
 east.consistency.pant = consistency(individual1 = east.data.set$individual1, individual2 = east.data.set$individual2, date = east.data.set$date, interactions = east.data.set$pant.grunt.sent, observation.time = east.data.set$obs.time.with.ass, k.seq = 0.01, j = 100, plot.col = 'green',behaviour = 'pant grunt')
 
-all.east = do.call(rbind, list(east.consistency.grooming$consistency,
-                               east.consistency.aggression.contact$consistency,
-                               east.consistency.aggression.noncontact$consistency,
-                               east.consistency.aggression$consistency,
-                               east.consistency.proximity$consistency,
-                               east.consistency.bodycontact$consistency,
-                               east.consistency.foodshare$consistency,
-                               east.consistency.pant$consistency))
-all.east$group = 'East'
+#### create consistencies: South group
+south.consistency.grooming = consistency(individual1 = south.data.set$individual1, individual2 = south.data.set$individual2, date = south.data.set$date, interactions = south.data.set$grooming.sent, observation.time = south.data.set$obs.time.with.ass, k.seq = 0.01, j = 100, plot.col = 'blue', behaviour = 'grooming', average.duration = sum(south.data.set$grooming.sent)/sum(south.data.set$grooming.interactions.sent))
+south.consistency.aggression.contact = consistency(individual1 = south.data.set$individual1, individual2 = south.data.set$individual2, date = south.data.set$date, interactions = south.data.set$aggression.physical.sent, observation.time = south.data.set$obs.time.with.ass, k.seq = 0.01, j = 100, plot.col = 'blue',behaviour = 'contact aggression')
+south.consistency.aggression.noncontact = consistency(individual1 = south.data.set$individual1, individual2 = south.data.set$individual2, date = south.data.set$date, interactions = south.data.set$aggression.nonphysical.sent, observation.time = south.data.set$obs.time.with.ass, k.seq = 0.01, j = 100, plot.col = 'blue',behaviour = 'noncontact aggression')
+south.consistency.aggression = consistency(individual1 = south.data.set$individual1, individual2 = south.data.set$individual2, date = south.data.set$date, interactions = south.data.set$aggression.physical.sent + south.data.set$aggression.nonphysical.sent, observation.time = south.data.set$obs.time.with.ass, k.seq = 0.01, j = 100, plot.col = 'blue',behaviour = 'aggression')
+south.consistency.proximity = consistency(individual1 = south.data.set$individual1, individual2 = south.data.set$individual2, date = south.data.set$date, undirectional = TRUE,  interactions = south.data.set$proximity3m, observation.time = south.data.set$obs.time.without.ass, k.seq = 0.01, j = 100, plot.col = 'blue',behaviour = 'proximity', average.duration = sum(south.data.set$proximity3m)/sum(south.data.set$proximity3m.interactions))
+south.consistency.bodycontact = consistency(individual1 = south.data.set$individual1, individual2 = south.data.set$individual2, date = south.data.set$date, undirectional = TRUE, interactions = south.data.set$proximity, observation.time = south.data.set$obs.time.without.ass, k.seq = 0.01, j = 100, plot.col = 'blue',behaviour = 'body contact', average.duration = sum(south.data.set$proximity)/sum(south.data.set$proximity.interactions))
+south.consistency.foodshare = consistency(individual1 = south.data.set$individual1, individual2 = south.data.set$individual2, date = south.data.set$date, interactions = south.data.set$food.share.sent, observation.time = south.data.set$obs.time.without.ass, k.seq = 0.01, j = 100, plot.col = 'blue',behaviour = 'food sharing')
+south.consistency.pant = consistency(individual1 = south.data.set$individual1, individual2 = south.data.set$individual2, date = south.data.set$date, interactions = south.data.set$pant.grunt.sent, observation.time = south.data.set$obs.time.with.ass, k.seq = 0.01, j = 100, plot.col = 'green',behaviour = 'pant grunt')
 
-ggplot(all.east, aes(x = interactions.per.dyad, y = cor.halves, color = behaviour, fill = behaviour)) +
-  geom_point(alpha = 0.5) +
-  geom_smooth(show.legend = F, method = 'loess', formula = y~x, na.rm = T, n = 100, level = 0.95, se = T) +
-  ylim(-0.1,1) +
-  ylab('Correlation between Random Halves') +
-  xlab('Average Interactions per Dyad') +
-  geom_hline(yintercept = 0.5, linetype = 2) +
-  facet_grid(~behaviour, scales = 'free') +
-  theme_bw()
+#### create consistencies: Mangabey group
+mang.consistency.grooming = consistency(individual1 = mang.data.set$individual1, individual2 = mang.data.set$individual2, date = mang.data.set$date, interactions = mang.data.set$grooming.sent, observation.time = mang.data.set$observation.time.with.assistants, k.seq = 0.01, j = 100, plot.col = 'yellow', behaviour = 'grooming', average.duration = sum(mang.data.set$grooming.sent)/sum(mang.data.set$grooming.interactions.sent))
+mang.consistency.aggression.contact = consistency(individual1 = mang.data.set$individual1, individual2 = mang.data.set$individual2, date = mang.data.set$date, interactions = mang.data.set$aggression.physical.sent, observation.time = mang.data.set$observation.time.with.assistants, k.seq = 0.01, j = 100, plot.col = 'yellow',behaviour = 'contact aggression')
+mang.consistency.aggression.noncontact = consistency(individual1 = mang.data.set$individual1, individual2 = mang.data.set$individual2, date = mang.data.set$date, interactions = mang.data.set$aggression.nonphysical.sent, observation.time = mang.data.set$observation.time.with.assistants, k.seq = 0.01, j = 100, plot.col = 'yellow',behaviour = 'noncontact aggression')
+mang.consistency.aggression = consistency(individual1 = mang.data.set$individual1, individual2 = mang.data.set$individual2, date = mang.data.set$date, interactions = mang.data.set$aggression.physical.sent + mang.data.set$aggression.nonphysical.sent, observation.time = mang.data.set$observation.time.with.assistants, k.seq = 0.01, j = 100, plot.col = 'yellow',behaviour = 'aggression')
+mang.consistency.proximity = consistency(individual1 = mang.data.set$individual1, individual2 = mang.data.set$individual2, date = mang.data.set$date, interactions = mang.data.set$proximity3m, undirectional = TRUE, observation.time = mang.data.set$observation.time.with.assistants, k.seq = 0.01, j = 50, plot.col = 'yellow',behaviour = 'proximity')
+mang.consistency.bodycontact = consistency(individual1 = mang.data.set$individual1, individual2 = mang.data.set$individual2, date = mang.data.set$date, interactions = mang.data.set$proximity, undirectional = TRUE, observation.time = mang.data.set$observation.time.with.assistants, k.seq = 0.01, j = 100, plot.col = 'yellow',behaviour = 'body contact')
+mang.consistency.supplant = consistency(individual1 = mang.data.set$individual1, individual2 = mang.data.set$individual2, date = mang.data.set$date, interactions = mang.data.set$supplant.sent, observation.time = mang.data.set$observation.time.with.assistants, k.seq = 0.01, j = 100, plot.col = 'yellow',behaviour = 'supplant')
 
+#### overview of standardised consistency values
 east.stand = rbind(east.consistency.grooming$standardised,
                    east.consistency.bodycontact$standardised,
                    east.consistency.proximity$standardised,
@@ -43,37 +46,6 @@ east.stand = rbind(east.consistency.grooming$standardised,
                    east.consistency.pant$standardised)
 east.stand$behaviour = c('grooming', 'body contact', 'proximity', 'contact aggression', 'noncontact aggression', 'aggression', 'food share', 'pant grunt')
 
-
-
-mang.consistency.grooming = consistency(individual1 = mang.data.set$individual1, individual2 = mang.data.set$individual2, date = mang.data.set$date, interactions = mang.data.set$grooming.sent, observation.time = mang.data.set$observation.time.with.assistants, k.seq = 0.01, j = 100, plot.col = 'yellow', behaviour = 'grooming', average.duration = sum(mang.data.set$grooming.sent)/sum(mang.data.set$grooming.interactions.sent))
-mang.consistency.aggression.contact = consistency(individual1 = mang.data.set$individual1, individual2 = mang.data.set$individual2, date = mang.data.set$date, interactions = mang.data.set$aggression.physical.sent, observation.time = mang.data.set$observation.time.with.assistants, k.seq = 0.01, j = 100, plot.col = 'yellow',behaviour = 'contact aggression')
-mang.consistency.aggression.noncontact = consistency(individual1 = mang.data.set$individual1, individual2 = mang.data.set$individual2, date = mang.data.set$date, interactions = mang.data.set$aggression.nonphysical.sent, observation.time = mang.data.set$observation.time.with.assistants, k.seq = 0.01, j = 100, plot.col = 'yellow',behaviour = 'noncontact aggression')
-mang.consistency.aggression = consistency(individual1 = mang.data.set$individual1, individual2 = mang.data.set$individual2, date = mang.data.set$date, interactions = mang.data.set$aggression.physical.sent + mang.data.set$aggression.nonphysical.sent, observation.time = mang.data.set$observation.time.with.assistants, k.seq = 0.01, j = 100, plot.col = 'yellow',behaviour = 'aggression')
-mang.consistency.proximity = consistency(individual1 = mang.data.set$individual1, individual2 = mang.data.set$individual2, date = mang.data.set$date, interactions = mang.data.set$proximity3m, undirectional = TRUE, observation.time = mang.data.set$observation.time.with.assistants, k.seq = 0.01, j = 50, plot.col = 'yellow',behaviour = 'proximity')
-mang.consistency.bodycontact = consistency(individual1 = mang.data.set$individual1, individual2 = mang.data.set$individual2, date = mang.data.set$date, interactions = mang.data.set$proximity, undirectional = TRUE, observation.time = mang.data.set$observation.time.with.assistants, k.seq = 0.01, j = 100, plot.col = 'yellow',behaviour = 'body contact')
-mang.consistency.supplant = consistency(individual1 = mang.data.set$individual1, individual2 = mang.data.set$individual2, date = mang.data.set$date, interactions = mang.data.set$supplant.sent, observation.time = mang.data.set$observation.time.with.assistants, k.seq = 0.01, j = 100, plot.col = 'yellow',behaviour = 'supplant')
-
-
-all.mang = do.call(rbind, list(mang.consistency.grooming$consistency,
-                               mang.consistency.aggression.contact$consistency,
-                               mang.consistency.aggression.noncontact$consistency,
-                               mang.consistency.aggression$consistency,
-                               mang.consistency.proximity$consistency,
-                               mang.consistency.bodycontact$consistency,
-                               mang.consistency.supplant$consistency))
-all.mang$group = 'Mangabey'
-
-ggplot(all.mang, aes(x = interactions.per.individual, y = cor.halves, color = behaviour, fill = behaviour)) +
-  geom_point(alpha = 0.5) +
-  geom_smooth(show.legend = F, method = 'loess', formula = y~x, na.rm = T, n = 100, level = 0.95, se = T) +
-  ylim(-0.1,1) +
-  ylab('Correlation between Random Halves') +
-  xlab('Average Interactions per Dyad') +
-  geom_hline(yintercept = 0.5, linetype = 2) +
-  facet_grid(~behaviour, scales = 'free') +
-  theme_bw()
-
-
 mang.stand = rbind(mang.consistency.grooming$standardised,
                    mang.consistency.bodycontact$standardised,
                    mang.consistency.proximity$standardised,
@@ -82,36 +54,6 @@ mang.stand = rbind(mang.consistency.grooming$standardised,
                    mang.consistency.aggression$standardised,
                    mang.consistency.supplant$standardised)
 mang.stand$behaviour = c('grooming', 'body contact', 'proximity', 'contact aggression', 'noncontact aggression', 'aggression', 'supplant')
-
-south.consistency.grooming = consistency(individual1 = south.data.set$individual1, individual2 = south.data.set$individual2, date = south.data.set$date, interactions = south.data.set$grooming.sent, observation.time = south.data.set$obs.time.with.ass, k.seq = 0.01, j = 100, plot.col = 'blue', behaviour = 'grooming', average.duration = sum(south.data.set$grooming.sent)/sum(south.data.set$grooming.interactions.sent))
-south.consistency.aggression.contact = consistency(individual1 = south.data.set$individual1, individual2 = south.data.set$individual2, date = south.data.set$date, interactions = south.data.set$aggression.physical.sent, observation.time = south.data.set$obs.time.with.ass, k.seq = 0.01, j = 100, plot.col = 'blue',behaviour = 'contact aggression')
-south.consistency.aggression.noncontact = consistency(individual1 = south.data.set$individual1, individual2 = south.data.set$individual2, date = south.data.set$date, interactions = south.data.set$aggression.nonphysical.sent, observation.time = south.data.set$obs.time.with.ass, k.seq = 0.01, j = 100, plot.col = 'blue',behaviour = 'noncontact aggression')
-south.consistency.aggression = consistency(individual1 = south.data.set$individual1, individual2 = south.data.set$individual2, date = south.data.set$date, interactions = south.data.set$aggression.physical.sent + south.data.set$aggression.nonphysical.sent, observation.time = south.data.set$obs.time.with.ass, k.seq = 0.01, j = 100, plot.col = 'blue',behaviour = 'aggression')
-south.consistency.proximity = consistency(individual1 = south.data.set$individual1, individual2 = south.data.set$individual2, date = south.data.set$date, undirectional = TRUE,  interactions = south.data.set$proximity3m, observation.time = south.data.set$obs.time.without.ass, k.seq = 0.01, j = 100, plot.col = 'blue',behaviour = 'proximity', average.duration = sum(south.data.set$proximity3m)/sum(south.data.set$proximity3m.interactions))
-south.consistency.bodycontact = consistency(individual1 = south.data.set$individual1, individual2 = south.data.set$individual2, date = south.data.set$date, undirectional = TRUE, interactions = south.data.set$proximity, observation.time = south.data.set$obs.time.without.ass, k.seq = 0.01, j = 100, plot.col = 'blue',behaviour = 'body contact', average.duration = sum(south.data.set$proximity)/sum(south.data.set$proximity.interactions))
-south.consistency.foodshare = consistency(individual1 = south.data.set$individual1, individual2 = south.data.set$individual2, date = south.data.set$date, interactions = south.data.set$food.share.sent, observation.time = south.data.set$obs.time.without.ass, k.seq = 0.01, j = 100, plot.col = 'blue',behaviour = 'food sharing')
-south.consistency.pant = consistency(individual1 = south.data.set$individual1, individual2 = south.data.set$individual2, date = south.data.set$date, interactions = south.data.set$pant.grunt.sent, observation.time = south.data.set$obs.time.with.ass, k.seq = 0.01, j = 100, plot.col = 'green',behaviour = 'pant grunt')
-
-all.south = do.call(rbind, list(south.consistency.grooming$consistency,
-                               south.consistency.aggression.contact$consistency,
-                               south.consistency.aggression.noncontact$consistency,
-                               south.consistency.aggression$consistency,
-                               south.consistency.proximity$consistency,
-                               south.consistency.bodycontact$consistency,
-                               south.consistency.foodshare$consistency,
-                               south.consistency.pant$consistency))
-all.south$group = 'South'
-
-ggplot(all.south, aes(x = interactions.per.individual, y = cor.halves, color = behaviour, fill = behaviour)) +
-  geom_point(alpha = 0.5) +
-  geom_smooth(show.legend = F, method = 'loess', formula = y~x, na.rm = T, n = 100, level = 0.95, se = T) +
-  ylim(-0.1,1) +
-  ylab('Correlation between Random Halves') +
-  xlab('Average Interactions per Individual') +
-  geom_hline(yintercept = 0.5, linetype = 2) +
-  facet_grid(~behaviour, scales = 'free') +
-  theme_bw()
-
 
 south.stand = rbind(south.consistency.grooming$standardised,
                    south.consistency.bodycontact$standardised,
@@ -123,6 +65,18 @@ south.stand = rbind(south.consistency.grooming$standardised,
                    south.consistency.pant$standardised)
 south.stand$behaviour = c('grooming', 'body contact', 'proximity', 'contact aggression', 'noncontact aggression', 'aggression', 'food share', 'pant grunt')
 
+#combined
+all.stand = rbind(
+  cbind(south.stand, group = 'south'),
+  cbind(east.stand, group = 'east'),
+  cbind(mang.stand, group = 'mangabey')
+)
+
+all.stand = all.stand[all.stand$behaviour!='food share' & all.stand$behaviour!='contact aggression' & all.stand$behaviour!='aggression',]
+all.stand$behaviour[all.stand$behaviour%in%c('supplant', 'pant grunt')] = 'pant grunt/supplant'
+
+
+############ Create plots comparing the groups
 
 ## grooming
 s.groomingeast = standardisation(consistency.frame = east.consistency.grooming$consistency)$ind.int
@@ -144,7 +98,7 @@ all.grooming  = rbind(
 grooming.plot = ggplot(all.grooming  %>%
                              sample_frac(0.4, replace = T),
                            aes(x = interactions.per.dyad, y = cor.halves, color = group)) +
-  geom_point(alpha = 0.6, size = 1) + ylim(0,1) + xlim(0,10) +
+  geom_point(alpha = 0.4, size = 1) + ylim(0,1) + xlim(0,10) +
   geom_hline(aes(yintercept = 0.5), linetype = 2) +
   geom_line(s.grooming, mapping = aes(x = average.interactions.per.dyad, y = average.median, color = as.factor(group)), size = 1.5) +
   #facet_grid(cols = vars(group)) +
@@ -171,9 +125,9 @@ all.bodycontact  = rbind(
 )
 
 bodycontact.plot = ggplot(all.bodycontact  %>%
-                         sample_frac(0.2, replace = T),
+                         sample_frac(0.5, replace = F),
                        aes(x = interactions.per.dyad, y = cor.halves, color = group)) +
-  geom_point(alpha = 0.6, size = 1) + ylim(0,1) + xlim(0,30) +
+  geom_point(alpha = 0.4, size = 1) + ylim(0,1) + xlim(0,30) +
   geom_hline(aes(yintercept = 0.5), linetype = 2) +
   geom_line(s.bodycontact, mapping = aes(x = average.interactions.per.dyad, y = average.median, color = as.factor(group)), size = 1.5) +
   #facet_grid(cols = vars(group)) +
@@ -200,9 +154,9 @@ all.proximity  = rbind(
 )
 
 proximity.plot = ggplot(all.proximity  %>%
-                            sample_frac(0.2, replace = T),
+                          sample_frac(0.5, replace = F),
                           aes(x = interactions.per.dyad, y = cor.halves, color = group)) +
-  geom_point(alpha = 0.6, size = 1) + ylim(0,1) + xlim(0,35) +
+  geom_point(alpha = 0.4, size = 1) + ylim(0,1) + xlim(0,35) +
   geom_hline(aes(yintercept = 0.5), linetype = 2) +
   geom_line(s.proximity, mapping = aes(x = average.interactions.per.dyad, y = average.median, color = as.factor(group)), size = 1.5) +
   #facet_grid(cols = vars(group)) +
@@ -229,9 +183,9 @@ all.aggression.contact  = rbind(
 )
 
 aggression.contact.plot = ggplot(all.aggression.contact  %>%
-                          sample_frac(0.2, replace = T),
+                                   sample_frac(0.5, replace = F),
                         aes(x = interactions.per.dyad, y = cor.halves, color = group)) +
-  geom_point(alpha = 0.6, size = 1) + ylim(0,1) + xlim(0,3) +
+  geom_point(alpha = 0.4, size = 1) + ylim(0,1) + xlim(0,3) +
   geom_hline(aes(yintercept = 0.5), linetype = 2) +
   geom_line(s.aggression.contact, mapping = aes(x = average.interactions.per.dyad, y = average.median, color = as.factor(group)), size = 1.5) +
   #facet_grid(cols = vars(group)) +
@@ -258,9 +212,9 @@ all.aggression.noncontact  = rbind(
 )
 
 aggression.noncontact.plot = ggplot(all.aggression.noncontact  %>%
-                                   sample_frac(0.2, replace = T),
+                                      sample_frac(0.5, replace = F),
                                  aes(x = interactions.per.dyad, y = cor.halves, color = group)) +
-  geom_point(alpha = 0.6, size = 1) + ylim(0,1) + xlim(0,6) +
+  geom_point(alpha = 0.4, size = 1) + ylim(0,1) + xlim(0,6) +
   geom_hline(aes(yintercept = 0.5), linetype = 2) +
   geom_line(s.aggression.noncontact, mapping = aes(x = average.interactions.per.dyad, y = average.median, color = as.factor(group)), size = 1.5) +
   #facet_grid(cols = vars(group)) +
@@ -287,9 +241,9 @@ all.pant  = rbind(
 )
 
 pant.plot = ggplot(all.pant  %>%
-                                      sample_frac(0.3, replace = T),
+                                      sample_frac(0.5, replace = F),
                                     aes(x = interactions.per.dyad, y = cor.halves, color = group)) +
-  geom_point(alpha = 0.6, size = 1) + ylim(0,1) + xlim(0,6) +
+  geom_point(alpha = 0.4, size = 1) + ylim(0,1) + xlim(0,6) +
   geom_hline(aes(yintercept = 0.5), linetype = 2) +
   geom_line(s.pant, mapping = aes(x = average.interactions.per.dyad, y = average.median, color = as.factor(group)), size = 1.5) +
   #facet_grid(cols = vars(group)) +
@@ -313,9 +267,9 @@ all.foodshare  = rbind(
 )
 
 foodshare.plot = ggplot(all.foodshare  %>%
-                                      sample_frac(0.2, replace = T),
+                                      sample_frac(0.5, replace = F),
                                     aes(x = interactions.per.dyad, y = cor.halves, color = group)) +
-  geom_point(alpha = 0.6, size = 1) + ylim(0,1) + xlim(0,3) +
+  geom_point(alpha = 0.4, size = 1) + ylim(0,1) + xlim(0,3) +
   geom_hline(aes(yintercept = 0.5), linetype = 2) +
   geom_line(s.foodshare, mapping = aes(x = average.interactions.per.dyad, y = average.median, color = as.factor(group), shape = group), size = 1.5) +
   #facet_grid(cols = vars(group)) +
@@ -326,16 +280,7 @@ foodshare.plot = ggplot(all.foodshare  %>%
 
 
 
-#### standardised
-all.stand = rbind(
-  cbind(south.stand, group = 'south'),
-  cbind(east.stand, group = 'east'),
-  cbind(mang.stand, group = 'mangabey')
-)
-
-all.stand = all.stand[all.stand$behaviour!='food share' & all.stand$behaviour!='contact aggression' & all.stand$behaviour!='aggression',]
-all.stand$behaviour[all.stand$behaviour%in%c('supplant', 'pant grunt')] = 'pant grunt/supplant'
-
+#### standardised results
 stand.plot = ggplot(all.stand, aes(x = behaviour, y = interaction.per.dyad, color = group, fill = group, shape = group)) +
   geom_point(size = 3) +
   theme_bw() +
@@ -343,15 +288,14 @@ stand.plot = ggplot(all.stand, aes(x = behaviour, y = interaction.per.dyad, colo
   ggtitle('Summary Standardised Consistency') + 
   scale_color_manual(values = c("red", "blue", "gold"))
 
-library(gridExtra)
 
 
-tiff("Fig Grooming Food.tiff", width = 8, height = 10, units = 'in', res = 300)
-grid.arrange(grooming.plot, foodshare.plot)
+tiff("Fig Grooming Food.tiff", width = 12, height = 8, units = 'in', res = 300)
+grid.arrange(grooming.plot, foodshare.plot, ncol = 2)
 dev.off()
 
-tiff("Fig Bodycontact Proximity.tiff", width = 8, height = 10, units = 'in', res = 300)
-grid.arrange(bodycontact.plot, proximity.plot)
+tiff("Fig Bodycontact Proximity.tiff", width = 12, height = 8, units = 'in', res = 300)
+grid.arrange(bodycontact.plot, proximity.plot, ncol = 2)
 dev.off()
 
 tiff("Fig Aggression.tiff", width = 8, height = 12, units = 'in', res = 300)
@@ -362,9 +306,3 @@ tiff("Fig Summary.tiff", width = 8, height = 6, units = 'in', res = 300)
 stand.plot
 dev.off()
 
-all.results = rbind(all.south, all.east, all.mang)
-
-aggregate(all.results$cor.halves[all.results$subset.size == 1],
-            by = list(all.results$behaviour[all.results$subset.size == 1], 
-                      all.results$group[all.results$subset.size == 1]),
-            median)
