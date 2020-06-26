@@ -7,6 +7,9 @@ library(parallel)
 library(doParallel)
 consistency = cmpfun(consistency)
 
+
+############## this all takes really long. To make it faster, have smaller group sizes
+
 #nr of individuals in sample
 nr.ids = c(10, 10, 10, 15, 15, 15, 20, 20, 20)
 
