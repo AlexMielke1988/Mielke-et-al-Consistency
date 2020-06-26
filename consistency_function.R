@@ -1,9 +1,10 @@
 ##### This function creates the consistency measure as described in 'Mielke et al 2020 Consistency of social interactions in sooty mangabeys and chimpanzees'
+##### for questions, contact mielke.alexand@gmail.com
 ##### Essentially, the script repeatedly splits the interaction distributions randomly in half and compares the halves; it does this for successively smaller subsets of the data as a standardised measure of consistency
 ##### Data have to be structured by interactants and day; i.e., for each individual and each partner for each day, there should be a column stating how many interactions or minutes of interactions they had, and the observation time to standardise by
 ##### Examples of the data structure can be found in 'prepared_data.RData'
-##### The following parameters need to be defined
 
+##### The following parameters need to be defined
 #### Input
 ## 'Individual1' is a vector with the sender of the interaction type
 ## 'Individual2' is a vector with the receiver of the interaction type

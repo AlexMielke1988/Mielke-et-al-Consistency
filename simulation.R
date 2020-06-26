@@ -1,3 +1,4 @@
+#### Simulations for Mielke et al 2020 'Consistency of social interactions in sooty mangabeys and chimpanzees'
 ######### this code creates simulated data for n number of individuals, interacting 1-10 times a day, with three different certainties of choice (strong preference for some individuals, medium preference for some individuals, egalitarian distribution)
 ### at the end, for each individual, there should be interactions every day that they are the focal
 
@@ -19,7 +20,7 @@ sim.data = lapply(nr.ids, function(k) {
   subj.to.keep = as.character(1:k) 
   
   # create time frame
-  dates = seq(as.Date("2014-11-01"), as.Date("2015-10-31"), "days")
+  dates = seq(as.Date("2019-11-01"), as.Date("2020-10-31"), "days")
   
   #create combination
   date.set = data.frame(expand.grid(subj.to.keep, dates))
@@ -302,9 +303,6 @@ all.results = do.call(rbind, all.results)
 all.results$interactions.dyad = all.results$interactions/all.results$dyads
 
 
-####### plots
-library(ggplot2)
-library(tidyverse)
 #show that number of individuals is linear
 
 #### impact of number of individuals
@@ -317,7 +315,7 @@ standardisation.individuals20$individuals = 20
 standardisation.individuals = rbind(standardisation.individuals10, standardisation.individuals15, standardisation.individuals20)
 
 individual.impact = ggplot(filter(all.results, inverted == 0 & certainty == 'high' & observation.time == 1) %>%
-                             sample_frac(0.3, replace = T),
+                             sample_frac(0.5, replace = F),
                            aes(x = interactions.dyad, y = cor.halves, color = as.factor(individuals))) +
   geom_point(alpha = 0.6, size = 2) + ylim(0,1) + xlim(0,20) +
   geom_hline(aes(yintercept = 0.5), linetype = 2) +
@@ -338,7 +336,7 @@ standardisation.collection0.33 = standardisation(consistency.frame = data.frame(
 standardisation.collection0.33$observation.time = 0.33
 standardisation.collection = rbind(standardisation.collection0.33, standardisation.collection0.66, standardisation.collection1)
 
-collection.impact = ggplot(filter(all.results, inverted == 0 & certainty == 'high' & individuals == 15) %>% sample_frac(0.3, replace = T), aes(x = interactions.dyad, y = cor.halves, color = as.factor(observation.time))) +
+collection.impact = ggplot(filter(all.results, inverted == 0 & certainty == 'high' & individuals == 15) %>% sample_frac(0.5, replace = F), aes(x = interactions.dyad, y = cor.halves, color = as.factor(observation.time))) +
   geom_point(alpha = 0.6, size = 2) + ylim(0,1) + xlim(0,30) +
   geom_hline(aes(yintercept = 0.5), linetype = 2) +
   geom_line(standardisation.collection, mapping = aes(x = average.interactions.per.dyad, y = average.median, color = as.factor(observation.time)), size = 1.5) +
@@ -362,7 +360,7 @@ standardisation.certaintylow = standardisation(consistency.frame = data.frame(fi
 standardisation.certaintylow$certainty.a = '3'
 standardisation.certainty = rbind(standardisation.certaintylow, standardisation.certaintymedium, standardisation.certaintyhigh)
 
-certainty.impact = ggplot(filter(all.results, inverted == 0 & observation.time == 1 & individuals == 15 & certainty != 'random') %>% sample_frac(0.3, replace = T), aes(x = interactions.dyad, y = cor.halves, color = as.factor(certainty.a))) +
+certainty.impact = ggplot(filter(all.results, inverted == 0 & observation.time == 1 & individuals == 15 & certainty != 'random') %>% sample_frac(0.5, replace = F), aes(x = interactions.dyad, y = cor.halves, color = as.factor(certainty.a))) +
   geom_point(alpha = 0.6, size = 2) + ylim(-0.1,1) + xlim(0,30) + 
   geom_line(standardisation.certainty, mapping = aes(x = average.interactions.per.dyad, y = average.median, color = as.factor(certainty.a)), size = 1.5) +
   geom_hline(aes(yintercept = 0.5), linetype = 2) +
@@ -393,7 +391,7 @@ standardisation.condition = rbind(standardisation.conditionrandom, standardisati
 
 condition.impact = ggplot(filter(all.results, observation.time == 1 &
                                    individuals == 15 &
-                                   certainty %in% c('high', 'random') & condition != 'None') %>% sample_frac(0.3, replace = T),
+                                   certainty %in% c('high', 'random') & condition != 'None') %>% sample_frac(0.5, replace = F),
                           aes(x = interactions.dyad, y = cor.halves, color = as.factor(condition))) +
   geom_point(alpha = 0.4, size = 2) + ylim(-0.3,1) +
   geom_line(standardisation.condition, mapping = aes(x = average.interactions.per.dyad, y = average.median, color = as.factor(condition)), size = 1.5) +

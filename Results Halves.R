@@ -1,3 +1,6 @@
+#### Analysis of mangabey and chimpanzee data for Mielke et al 2020 'Consistency of social interactions in sooty mangabeys and chimpanzees'
+
+# load data and functions
 load("prepared_data.RData")
 source('consistency_function.R')
 library(compiler)
