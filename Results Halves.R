@@ -147,8 +147,6 @@ grooming.plot = ggplot(all.grooming  %>%
   geom_point(alpha = 0.6, size = 1) + ylim(0,1) + xlim(0,10) +
   geom_hline(aes(yintercept = 0.5), linetype = 2) +
   geom_line(s.grooming, mapping = aes(x = average.interactions.per.dyad, y = average.median, color = as.factor(group)), size = 1.5) +
-  geom_errorbar(s.grooming, mapping = aes(x = average.interactions.per.dyad, y = average.median, ymin=average.median-sd, ymax=average.median+sd, color = as.factor(group)), width=.5,
-                position=position_dodge(0.05)) +
   #facet_grid(cols = vars(group)) +
   theme_classic()  + labs(y = "Spearman Correlation Coefficient", x = 'Interactions per Dyad') +
   scale_color_manual(name = 'Group', values = c("red", "blue", "gold")) +
@@ -178,8 +176,6 @@ bodycontact.plot = ggplot(all.bodycontact  %>%
   geom_point(alpha = 0.6, size = 1) + ylim(0,1) + xlim(0,30) +
   geom_hline(aes(yintercept = 0.5), linetype = 2) +
   geom_line(s.bodycontact, mapping = aes(x = average.interactions.per.dyad, y = average.median, color = as.factor(group)), size = 1.5) +
-  geom_errorbar(s.bodycontact, mapping = aes(x = average.interactions.per.dyad, y = average.median, ymin=average.median-sd, ymax=average.median+sd, color = as.factor(group)), width=.5,
-                position=position_dodge(0.05)) +
   #facet_grid(cols = vars(group)) +
   theme_classic()  + labs(y = "Spearman Correlation Coefficient", x = 'Interactions per Dyad') +
   scale_color_manual(name = 'Group', values = c("red", "blue", "gold")) +
@@ -209,8 +205,6 @@ proximity.plot = ggplot(all.proximity  %>%
   geom_point(alpha = 0.6, size = 1) + ylim(0,1) + xlim(0,35) +
   geom_hline(aes(yintercept = 0.5), linetype = 2) +
   geom_line(s.proximity, mapping = aes(x = average.interactions.per.dyad, y = average.median, color = as.factor(group)), size = 1.5) +
-  geom_errorbar(s.proximity, mapping = aes(x = average.interactions.per.dyad, y = average.median, ymin=average.median-sd, ymax=average.median+sd, color = as.factor(group)), width=.5,
-                position=position_dodge(0.05)) +
   #facet_grid(cols = vars(group)) +
   theme_classic()  + labs(y = "Spearman Correlation Coefficient", x = 'Interactions per Dyad') +
   scale_color_manual(name = 'Group', values = c("red", "blue", "gold")) +
@@ -240,8 +234,6 @@ aggression.contact.plot = ggplot(all.aggression.contact  %>%
   geom_point(alpha = 0.6, size = 1) + ylim(0,1) + xlim(0,3) +
   geom_hline(aes(yintercept = 0.5), linetype = 2) +
   geom_line(s.aggression.contact, mapping = aes(x = average.interactions.per.dyad, y = average.median, color = as.factor(group)), size = 1.5) +
-  geom_errorbar(s.aggression.contact, mapping = aes(x = average.interactions.per.dyad, y = average.median, ymin=average.median-sd, ymax=average.median+sd, color = as.factor(group)), width=.5,
-                position=position_dodge(0.05)) +
   #facet_grid(cols = vars(group)) +
   theme_classic()  + labs(y = "Spearman Correlation Coefficient", x = 'Interactions per Dyad') +
   scale_color_manual(name = 'Group', values = c("red", "blue", "gold")) +
@@ -271,8 +263,6 @@ aggression.noncontact.plot = ggplot(all.aggression.noncontact  %>%
   geom_point(alpha = 0.6, size = 1) + ylim(0,1) + xlim(0,6) +
   geom_hline(aes(yintercept = 0.5), linetype = 2) +
   geom_line(s.aggression.noncontact, mapping = aes(x = average.interactions.per.dyad, y = average.median, color = as.factor(group)), size = 1.5) +
-  geom_errorbar(s.aggression.noncontact, mapping = aes(x = average.interactions.per.dyad, y = average.median, ymin=average.median-sd, ymax=average.median+sd, color = as.factor(group)), width=.5,
-                position=position_dodge(0.05)) +
   #facet_grid(cols = vars(group)) +
   theme_classic()  + labs(y = "Spearman Correlation Coefficient", x = 'Interactions per Dyad') +
   scale_color_manual(name = 'Group', values = c("red", "blue", "gold")) +
@@ -302,8 +292,6 @@ pant.plot = ggplot(all.pant  %>%
   geom_point(alpha = 0.6, size = 1) + ylim(0,1) + xlim(0,6) +
   geom_hline(aes(yintercept = 0.5), linetype = 2) +
   geom_line(s.pant, mapping = aes(x = average.interactions.per.dyad, y = average.median, color = as.factor(group)), size = 1.5) +
-  geom_errorbar(s.pant, mapping = aes(x = average.interactions.per.dyad, y = average.median, ymin=average.median-sd, ymax=average.median+sd, color = as.factor(group)), width=.5,
-                position=position_dodge(0.05)) +
   #facet_grid(cols = vars(group)) +
   theme_classic()  + labs(y = "Spearman Correlation Coefficient", x = 'Interactions per Dyad') +
   scale_color_manual(name = 'Group', values = c("red", "blue", "gold")) +
@@ -330,8 +318,6 @@ foodshare.plot = ggplot(all.foodshare  %>%
   geom_point(alpha = 0.6, size = 1) + ylim(0,1) + xlim(0,3) +
   geom_hline(aes(yintercept = 0.5), linetype = 2) +
   geom_line(s.foodshare, mapping = aes(x = average.interactions.per.dyad, y = average.median, color = as.factor(group), shape = group), size = 1.5) +
-  geom_errorbar(s.foodshare, mapping = aes(x = average.interactions.per.dyad, y = average.median, ymin=average.median-sd, ymax=average.median+sd, color = as.factor(group)), width=.5,
-                position=position_dodge(0.05)) +
   #facet_grid(cols = vars(group)) +
   theme_classic()  + labs(y = "Spearman Correlation Coefficient", x = 'Interactions per Dyad') +
   scale_color_manual(name = 'Group', values = c("red", "blue", "gold")) +

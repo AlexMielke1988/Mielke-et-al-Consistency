@@ -8,7 +8,7 @@ library(doParallel)
 consistency = cmpfun(consistency)
 
 
-nr.ids = c(10, 10, 10, 18, 18, 18, 26, 26, 26)
+nr.ids = c(10, 10, 10, 15, 15, 15, 20, 20, 20)
 
 sim.data = lapply(nr.ids, function(k) {
   subj.to.keep = as.character(1:k)
@@ -18,7 +18,7 @@ sim.data = lapply(nr.ids, function(k) {
 
   data.set = lapply(1:nrow(date.set), function(x) {
     xx = date.set[x, ]
-    xx = xx[rep(seq_len(nrow(xx)), each = sample(1:15, 1)), ]
+    xx = xx[rep(seq_len(nrow(xx)), each = sample(1:10, 1)), ]
     xx$gr.bout.index = x + (1:nrow(xx)) - 1
     xx = xx[rep(seq_len(nrow(xx)), each = length(subj.to.keep)), ]
     xx$pot.partner = as.character(subj.to.keep)
@@ -163,7 +163,7 @@ names(sim.data) = nr.ids
 
 
 sim.results = lapply(sim.data, function(n){
-  mycluster <- makeCluster(7, type = "PSOCK")
+  mycluster <- makeCluster(11, type = "PSOCK")
   # export the relevant information to each core
   clusterExport(cl = mycluster,
                 c("sim.data",
@@ -276,20 +276,18 @@ library(tidyverse)
 #### impact of number of individuals
 standardisation.individuals10 = standardisation(consistency.frame = data.frame(filter(all.results, inverted == 0 & certainty == 'high' & observation.time == 1 & individuals == 10)))$ind.int
 standardisation.individuals10$individuals = 10
-standardisation.individuals15 = standardisation(consistency.frame = data.frame(filter(all.results, inverted == 0 & certainty == 'high' & observation.time == 1 & individuals == 18)))$ind.int
-standardisation.individuals15$individuals = 18
-standardisation.individuals20 = standardisation(consistency.frame = data.frame(filter(all.results, inverted == 0 & certainty == 'high' & observation.time == 1 & individuals == 26)))$ind.int
-standardisation.individuals20$individuals = 26
+standardisation.individuals15 = standardisation(consistency.frame = data.frame(filter(all.results, inverted == 0 & certainty == 'high' & observation.time == 1 & individuals == 15)))$ind.int
+standardisation.individuals15$individuals = 15
+standardisation.individuals20 = standardisation(consistency.frame = data.frame(filter(all.results, inverted == 0 & certainty == 'high' & observation.time == 1 & individuals == 20)))$ind.int
+standardisation.individuals20$individuals = 20
 standardisation.individuals = rbind(standardisation.individuals10, standardisation.individuals15, standardisation.individuals20)
 
 individual.impact = ggplot(filter(all.results, inverted == 0 & certainty == 'high' & observation.time == 1) %>%
-                             sample_frac(0.1, replace = T),
+                             sample_frac(0.3, replace = T),
                            aes(x = interactions.dyad, y = cor.halves, color = as.factor(individuals))) +
   geom_point(alpha = 0.6, size = 2) + ylim(0,1) + xlim(0,20) +
   geom_hline(aes(yintercept = 0.5), linetype = 2) +
   geom_line(standardisation.individuals, mapping = aes(x = average.interactions.per.dyad, y = average.median, color = as.factor(individuals)), size = 1.5) +
-  geom_errorbar(standardisation.individuals, mapping = aes(x = average.interactions.per.dyad, y = average.median, ymin=average.median-sd, ymax=average.median+sd, color = as.factor(individuals)), width=.5,
-                position=position_dodge(0.05)) +
   # facet_grid(cols = vars(individuals)) +
   theme_classic()  + labs(y = "Spearman Correlation Coefficient", x = 'Interactions per Dyad') +
   scale_color_manual(name = 'Number of Individuals', values = c("red", "blue", "gold")) +
@@ -298,20 +296,18 @@ individual.impact = ggplot(filter(all.results, inverted == 0 & certainty == 'hig
 
 #### impact of collection density
 
-standardisation.collection1 = standardisation(consistency.frame = data.frame(filter(all.results, inverted == 0 & certainty == 'high' & individuals == 18 & observation.time == 1)))$ind.int
+standardisation.collection1 = standardisation(consistency.frame = data.frame(filter(all.results, inverted == 0 & certainty == 'high' & individuals == 15 & observation.time == 1)))$ind.int
 standardisation.collection1$observation.time = 1
-standardisation.collection0.66 = standardisation(consistency.frame = data.frame(filter(all.results, inverted == 0 & certainty == 'high' & individuals == 18 & observation.time == 0.66)))$ind.int
+standardisation.collection0.66 = standardisation(consistency.frame = data.frame(filter(all.results, inverted == 0 & certainty == 'high' & individuals == 15 & observation.time == 0.66)))$ind.int
 standardisation.collection0.66$observation.time = 0.66
-standardisation.collection0.33 = standardisation(consistency.frame = data.frame(filter(all.results, inverted == 0 & certainty == 'high' & individuals == 18 & observation.time == 0.33)))$ind.int
+standardisation.collection0.33 = standardisation(consistency.frame = data.frame(filter(all.results, inverted == 0 & certainty == 'high' & individuals == 15 & observation.time == 0.33)))$ind.int
 standardisation.collection0.33$observation.time = 0.33
 standardisation.collection = rbind(standardisation.collection0.33, standardisation.collection0.66, standardisation.collection1)
 
-collection.impact = ggplot(filter(all.results, inverted == 0 & certainty == 'high' & individuals == 18) %>% sample_frac(0.1, replace = T), aes(x = interactions.dyad, y = cor.halves, color = as.factor(observation.time))) +
+collection.impact = ggplot(filter(all.results, inverted == 0 & certainty == 'high' & individuals == 15) %>% sample_frac(0.3, replace = T), aes(x = interactions.dyad, y = cor.halves, color = as.factor(observation.time))) +
   geom_point(alpha = 0.6, size = 2) + ylim(0,1) + xlim(0,30) +
   geom_hline(aes(yintercept = 0.5), linetype = 2) +
   geom_line(standardisation.collection, mapping = aes(x = average.interactions.per.dyad, y = average.median, color = as.factor(observation.time)), size = 1.5) +
-  geom_errorbar(standardisation.collection, mapping = aes(x = average.interactions.per.dyad, y = average.median, ymin=average.median-sd, ymax=average.median+sd, color = as.factor(observation.time)), width=.5,
-                position=position_dodge(0.05)) +
   theme_classic()  + labs(y = "Spearman Correlation Coefficient", x = 'Interactions per Dyad') +
   scale_color_manual(name = 'Observation Time', values = c("red", "blue", "gold"), labels = c("1/3 Days", "2/3 Days", "All Days")) +
   ggtitle('2 Simulation Collection Effort')
@@ -324,19 +320,17 @@ all.results$certainty.a[all.results$certainty=='low'] = '3'
 all.results$certainty.a[all.results$certainty=='med'] = '2'
 all.results$certainty.a = as.factor(as.character(all.results$certainty.a))
 
-standardisation.certaintyhigh = standardisation(consistency.frame = data.frame(filter(all.results, inverted == 0 & certainty == 'high' & individuals == 18 & observation.time == 1)))$ind.int
+standardisation.certaintyhigh = standardisation(consistency.frame = data.frame(filter(all.results, inverted == 0 & certainty == 'high' & individuals == 15 & observation.time == 1)))$ind.int
 standardisation.certaintyhigh$certainty.a = '1'
-standardisation.certaintymedium = standardisation(consistency.frame = data.frame(filter(all.results, inverted == 0 & certainty == 'med' & individuals == 18 & observation.time == 1)))$ind.int
+standardisation.certaintymedium = standardisation(consistency.frame = data.frame(filter(all.results, inverted == 0 & certainty == 'med' & individuals == 15 & observation.time == 1)))$ind.int
 standardisation.certaintymedium$certainty.a = '2'
-standardisation.certaintylow = standardisation(consistency.frame = data.frame(filter(all.results, inverted == 0 & certainty == 'low' & individuals == 18 & observation.time == 1)))$ind.int
+standardisation.certaintylow = standardisation(consistency.frame = data.frame(filter(all.results, inverted == 0 & certainty == 'low' & individuals == 15 & observation.time == 1)))$ind.int
 standardisation.certaintylow$certainty.a = '3'
 standardisation.certainty = rbind(standardisation.certaintylow, standardisation.certaintymedium, standardisation.certaintyhigh)
 
-certainty.impact = ggplot(filter(all.results, inverted == 0 & observation.time == 1 & individuals == 18 & certainty != 'random') %>% sample_frac(0.1, replace = T), aes(x = interactions.dyad, y = cor.halves, color = as.factor(certainty.a))) +
+certainty.impact = ggplot(filter(all.results, inverted == 0 & observation.time == 1 & individuals == 15 & certainty != 'random') %>% sample_frac(0.3, replace = T), aes(x = interactions.dyad, y = cor.halves, color = as.factor(certainty.a))) +
   geom_point(alpha = 0.6, size = 2) + ylim(-0.1,1) + xlim(0,30) + 
   geom_line(standardisation.certainty, mapping = aes(x = average.interactions.per.dyad, y = average.median, color = as.factor(certainty.a)), size = 1.5) +
-  geom_errorbar(standardisation.certainty, mapping = aes(x = average.interactions.per.dyad, y = average.median, ymin=average.median-sd, ymax=average.median+sd, color = as.factor(certainty.a)), width=.5,
-                position=position_dodge(0.05)) +
   geom_hline(aes(yintercept = 0.5), linetype = 2) +
   geom_hline(aes(yintercept = 0), linetype = 1) +
   # facet_grid(cols = vars(certainty)) +
@@ -354,23 +348,21 @@ all.results$condition[all.results$inverted == 0] = 'consistent'
 all.results$condition[all.results$certainty == 'random'] = 'random'
 
 
-standardisation.conditionconsistent = standardisation(consistency.frame = data.frame(filter(all.results, certainty == 'high' & individuals == 10 & observation.time == 1 & condition == 'consistent')))$ind.int
+standardisation.conditionconsistent = standardisation(consistency.frame = data.frame(filter(all.results, certainty == 'high' & individuals == 15 & observation.time == 1 & condition == 'consistent')))$ind.int
 standardisation.conditionconsistent$condition = 'consistent'
-standardisation.conditioninverted = standardisation(consistency.frame = data.frame(filter(all.results, certainty == 'high' & individuals == 10 & observation.time == 1 & condition == 'inverted')))$ind.int
+standardisation.conditioninverted = standardisation(consistency.frame = data.frame(filter(all.results, certainty == 'high' & individuals == 15 & observation.time == 1 & condition == 'inverted')))$ind.int
 standardisation.conditioninverted$condition = 'inverted'
-standardisation.conditionrandom = standardisation(consistency.frame = data.frame(filter(all.results, certainty == 'random' & individuals == 10 & observation.time == 1)))$ind.int
+standardisation.conditionrandom = standardisation(consistency.frame = data.frame(filter(all.results, certainty == 'random' & individuals == 15 & observation.time == 1)))$ind.int
 standardisation.conditionrandom$condition = 'random'
 standardisation.condition = rbind(standardisation.conditionrandom, standardisation.conditioninverted, standardisation.conditionconsistent)
 
 
 condition.impact = ggplot(filter(all.results, observation.time == 1 &
-                                   individuals == 10 &
-                                   certainty %in% c('high', 'random') & condition != 'None') %>% sample_frac(0.1, replace = T),
+                                   individuals == 15 &
+                                   certainty %in% c('high', 'random') & condition != 'None') %>% sample_frac(0.3, replace = T),
                           aes(x = interactions.dyad, y = cor.halves, color = as.factor(condition))) +
   geom_point(alpha = 0.4, size = 2) + ylim(-0.3,1) +
   geom_line(standardisation.condition, mapping = aes(x = average.interactions.per.dyad, y = average.median, color = as.factor(condition)), size = 1.5) +
-  geom_errorbar(standardisation.condition, mapping = aes(x = average.interactions.per.dyad, y = average.median, ymin=average.median-sd, ymax=average.median+sd, color = as.factor(condition)), width=.5,
-                position=position_dodge(0.05)) +
   geom_hline(aes(yintercept = 0.5), linetype = 2) +
   geom_hline(aes(yintercept = 0), linetype = 1) +
   theme_minimal()  + labs(y = "Spearman Correlation Coefficient", x = 'Interactions per Dyad') +

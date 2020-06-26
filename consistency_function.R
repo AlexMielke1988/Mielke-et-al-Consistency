@@ -96,7 +96,5 @@ consistency <- function(individual1, individual2, date, interactions, undirectio
     theme_bw()
   consistency.plot = consistency.plot +
     geom_line(standard$ind.int, mapping = aes(x = average.interactions.per.dyad, y = average.median), color = plot.col, size = 1.5) +
-    geom_errorbar(standard$ind.int, mapping = aes(x = average.interactions.per.dyad, y = average.median, ymin=average.median-sd, ymax=average.median+sd), color = plot.col, width=.5,
-                  position=position_dodge(0.05))
   return(list(consistency = consistency.frame, plot = consistency.plot, standardised = standard$results))
 }
