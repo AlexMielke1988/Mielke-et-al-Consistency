@@ -315,7 +315,7 @@ standardisation.individuals20$individuals = 20
 standardisation.individuals = rbind(standardisation.individuals10, standardisation.individuals15, standardisation.individuals20)
 
 individual.impact = ggplot(filter(all.results, inverted == 0 & certainty == 'high' & observation.time == 1) %>%
-                             sample_frac(0.5, replace = F),
+                             sample_frac(0.3, replace = F),
                            aes(x = interactions.dyad, y = cor.halves, color = as.factor(individuals))) +
   geom_point(alpha = 0.6, size = 2) + ylim(0,1) + xlim(0,20) +
   geom_hline(aes(yintercept = 0.5), linetype = 2) +
@@ -336,7 +336,7 @@ standardisation.collection0.33 = standardisation(consistency.frame = data.frame(
 standardisation.collection0.33$observation.time = 0.33
 standardisation.collection = rbind(standardisation.collection0.33, standardisation.collection0.66, standardisation.collection1)
 
-collection.impact = ggplot(filter(all.results, inverted == 0 & certainty == 'high' & individuals == 15) %>% sample_frac(0.5, replace = F), aes(x = interactions.dyad, y = cor.halves, color = as.factor(observation.time))) +
+collection.impact = ggplot(filter(all.results, inverted == 0 & certainty == 'high' & individuals == 15) %>% sample_frac(0.3, replace = F), aes(x = interactions.dyad, y = cor.halves, color = as.factor(observation.time))) +
   geom_point(alpha = 0.6, size = 2) + ylim(0,1) + xlim(0,30) +
   geom_hline(aes(yintercept = 0.5), linetype = 2) +
   geom_line(standardisation.collection, mapping = aes(x = average.interactions.per.dyad, y = average.median, color = as.factor(observation.time)), size = 1.5) +
@@ -360,7 +360,7 @@ standardisation.certaintylow = standardisation(consistency.frame = data.frame(fi
 standardisation.certaintylow$certainty.a = '3'
 standardisation.certainty = rbind(standardisation.certaintylow, standardisation.certaintymedium, standardisation.certaintyhigh)
 
-certainty.impact = ggplot(filter(all.results, inverted == 0 & observation.time == 1 & individuals == 15 & certainty != 'random') %>% sample_frac(0.5, replace = F), aes(x = interactions.dyad, y = cor.halves, color = as.factor(certainty.a))) +
+certainty.impact = ggplot(filter(all.results, inverted == 0 & observation.time == 1 & individuals == 15 & certainty != 'random') %>% sample_frac(0.1, replace = F), aes(x = interactions.dyad, y = cor.halves, color = as.factor(certainty.a))) +
   geom_point(alpha = 0.6, size = 2) + ylim(-0.1,1) + xlim(0,30) + 
   geom_line(standardisation.certainty, mapping = aes(x = average.interactions.per.dyad, y = average.median, color = as.factor(certainty.a)), size = 1.5) +
   geom_hline(aes(yintercept = 0.5), linetype = 2) +
@@ -391,7 +391,7 @@ standardisation.condition = rbind(standardisation.conditionrandom, standardisati
 
 condition.impact = ggplot(filter(all.results, observation.time == 1 &
                                    individuals == 15 &
-                                   certainty %in% c('high', 'random') & condition != 'None') %>% sample_frac(0.5, replace = F),
+                                   certainty %in% c('high', 'random') & condition != 'None') %>% sample_frac(0.3, replace = F),
                           aes(x = interactions.dyad, y = cor.halves, color = as.factor(condition))) +
   geom_point(alpha = 0.4, size = 2) + ylim(-0.3,1) +
   geom_line(standardisation.condition, mapping = aes(x = average.interactions.per.dyad, y = average.median, color = as.factor(condition)), size = 1.5) +
@@ -405,8 +405,8 @@ condition.impact = ggplot(filter(all.results, observation.time == 1 &
 
 library(gridExtra)
 
-tiff("Fig 3.tiff", width = 8, height = 10, units = 'in', res = 300)
-grid.arrange(individual.impact, collection.impact)
+tiff("Fig 3.tiff", width = 12, height = 8, units = 'in', res = 300)
+grid.arrange(individual.impact, collection.impact, ncol = 2)
 dev.off()
 tiff("Fig 4.tiff", width = 8, height = 6, units = 'in', res = 300)
 certainty.impact
