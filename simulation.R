@@ -405,8 +405,8 @@ condition.impact = ggplot(filter(all.results, observation.time == 1 &
 
 library(gridExtra)
 
-tiff("Fig 3.tiff", width = 8, height = 10, units = 'in', res = 300)
-grid.arrange(individual.impact, collection.impact)
+tiff("Fig 3.tiff", width = 12, height = 8, units = 'in', res = 300)
+grid.arrange(individual.impact, collection.impact, ncol = 2)
 dev.off()
 tiff("Fig 4.tiff", width = 8, height = 6, units = 'in', res = 300)
 certainty.impact

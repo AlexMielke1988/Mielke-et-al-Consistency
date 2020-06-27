@@ -3,22 +3,22 @@
     "path": "~/GitHub/Consistency-Paper/simulation.R",
     "project_path": "simulation.R",
     "type": "r_source",
-    "hash": "0",
+    "hash": "4097668757",
     "contents": "",
-    "dirty": true,
+    "dirty": false,
     "created": 1591037635359.0,
     "source_on_save": false,
     "relative_order": 1,
     "properties": {
-        "cursorPosition": "410,0",
+        "cursorPosition": "401,55",
         "scrollLine": "389"
     },
     "folds": "",
-    "lastKnownWriteTime": 1593255719,
+    "lastKnownWriteTime": 1593256178,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1593255820487,
+    "last_content_update": 1593256178234,
     "read_only": false,
     "read_only_alternatives": []
 }
